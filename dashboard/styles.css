@@ -1,0 +1,182 @@
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  background: #f7f8fa;
+  color: #1f2937;
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 24px;
+}
+
+section {
+  margin-bottom: 20px;
+}
+
+h1 {
+  margin-bottom: 20px;
+}
+
+.controls {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+select,
+button {
+  font-size: 14px;
+  padding: 8px 10px;
+}
+
+input[type="search"] {
+  font-size: 14px;
+  padding: 8px 10px;
+  min-width: 420px;
+}
+
+button {
+  cursor: pointer;
+}
+
+.kpis {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.kpis article,
+.chart-grid article,
+section > table,
+section {
+  background: white;
+  border-radius: 10px;
+}
+
+.kpis article {
+  padding: 14px;
+}
+
+.kpis h2 {
+  font-size: 14px;
+  margin: 0 0 8px;
+  color: #4b5563;
+}
+
+.kpis p {
+  margin: 0;
+  font-size: 28px;
+  font-weight: 700;
+}
+
+.chart-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.chart-grid article {
+  padding: 14px;
+}
+
+canvas {
+  width: 100% !important;
+  height: 420px !important;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  background: white;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+thead {
+  background: #eef2ff;
+}
+
+th,
+td {
+  text-align: left;
+  padding: 10px 12px;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+tbody tr:hover {
+  background: #f9fafb;
+}
+
+.leaderboard-toggle {
+  border: none;
+  background: transparent;
+  padding: 0;
+  margin-right: 6px;
+  cursor: pointer;
+  font-size: 13px;
+}
+
+tr.leaderboard-season td {
+  font-weight: 700;
+  background: #f8fafc;
+}
+
+.season-meta {
+  color: #9ca3af;
+  font-weight: 500;
+}
+
+tr.leaderboard-round td:first-child {
+  padding-left: 28px;
+}
+
+tr.leaderboard-song td:first-child {
+  padding-left: 56px;
+  color: #4b5563;
+}
+
+.song-search-controls {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 12px;
+}
+
+#songSearchCount {
+  margin: 0;
+  color: #6b7280;
+  font-size: 13px;
+}
+
+.compact-table th,
+.compact-table td {
+  padding: 6px 8px;
+  font-size: 12px;
+  line-height: 1.25;
+  vertical-align: top;
+}
+
+.song-search-pagination {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+#songPageInfo {
+  font-size: 13px;
+  color: #6b7280;
+}
+
+@media (max-width: 900px) {
+  .chart-grid,
+  .kpis {
+    grid-template-columns: 1fr;
+  }
+}

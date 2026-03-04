@@ -47,6 +47,39 @@ Optional custom playlist name:
 PLAYLIST_NAME="MusicLeague Top Tracks" make playlist
 ```
 
+## View dashboard
+
+Run a local static server:
+
+```bash
+make dashboard
+```
+
+Then open:
+
+- `http://127.0.0.1:8000/dashboard/`
+
+## Package dashboard for sharing
+
+Create a minimal shareable bundle (dashboard assets + processed data):
+
+```bash
+make dashboard-package
+```
+
+Output:
+- `dist/dashboard-share/`
+- `dist/dashboard-share.zip`
+
+For a single file that can be shared directly:
+
+```bash
+make dashboard-single-file
+```
+
+Output:
+- `dist/dashboard-single-file.html`
+
 ## Notes
 
 - This project uses a `src/` layout.
