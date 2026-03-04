@@ -80,6 +80,19 @@ make dashboard-single-file
 Output:
 - `dist/dashboard-single-file.html`
 
+## Publish to GitHub Pages
+
+This repo includes a workflow at `.github/workflows/deploy-pages.yml` that builds
+`dist/dashboard-single-file.html` and publishes it as your GitHub Pages `index.html`.
+
+Setup steps (one time):
+- Push this repo to GitHub (including the workflow file)
+- In GitHub: `Settings` -> `Pages` -> `Source` = `GitHub Actions`
+- Push to `main` (or run the workflow manually from the `Actions` tab)
+
+Your site will be available at:
+- `https://<your-github-username>.github.io/<your-repo-name>/`
+
 ## Notes
 
 - This project uses a `src/` layout.
