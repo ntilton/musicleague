@@ -165,4 +165,49 @@ function renderAllTime() {
   const root = $("#alltime-table");
   archive.allTimeLeaderboard.forEach((person, index) => {
     const row = make("div", "leader-row");
-    row.append(make("span", "leader-rank", String(index + 1).padStart(2, "0")), ma
+    row.append(make("span", "leader-rank", String(index + 1).padStart(2, "0")), make("strong", "leader-name", person.name));
+    [[person.points, "points"], [person.submissions, "songs"], [person.seasons, "seasons"]].forEach(([value, label]) => {
+      const stat = make("span", "leader-stat");
+      stat.append(make("strong", "", number.format(value)), make("span", "", label));
+      row.append(stat);
+    });
+    root.append(row);
+  });
+}
+
+function showView(view) {
+  const archiveView = view === "archive";
+  $("#archive-view").hidden = !archiveView;
+  $("#alltime-view").hidden = archiveView;
+  document.querySelectorAll(".nav-tab").forEach((tab) => tab.classList.toggle("is-active", tab.dataset.view === view));
+  if (!archiveView) $("#alltime-view").scrollIntoView({ behavior: "smooth", block: "start" });
+}
+
+async function init() {
+  try {
+    const response = await fetch("data.json");
+    if (!response.ok) throw new Error("Data unavailable");
+    archive = await response.json();
+    renderStats();
+    renderSeasonOptions();
+    renderSeason();
+    renderAllTime();
+  } catch (error) {
+    $("#rounds").append(make("p", "empty-state", "The archive data could not be loaded. Please refresh the page."));
+  }
+}
+
+$("#season-select").addEventListener("change", () => {
+  $("#search").value = "";
+  renderSeason();
+});
+$("#search").addEventListener("input", renderRounds);
+$("#toggle-standings").addEventListener("click", (event) => {
+  const expanded = event.currentTarget.getAttribute("aria-expanded") === "true";
+  event.currentTarget.setAttribute("aria-expanded", String(!expanded));
+  event.currentTarget.textContent = expanded ? "Show full table" : "Hide full table";
+  $("#full-standings").hidden = expanded;
+});
+document.querySelectorAll(".nav-tab").forEach((tab) => tab.addEventListener("click", () => showView(tab.dataset.view)));
+
+init();
