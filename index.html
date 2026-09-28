@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Eleven seasons of Conscious Club songs, votes, comments, and questionable taste.">
+  <title>The Conscious Club Archive</title>
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='12' fill='%230a0d12'/%3E%3Ccircle cx='32' cy='32' r='22' fill='%23c7ff5e'/%3E%3Ccircle cx='32' cy='32' r='8' fill='%230a0d12'/%3E%3Ccircle cx='32' cy='32' r='3' fill='%23f3f0e8'/%3E%3C/svg%3E">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header class="site-header">
+    <a class="brand" href="#top" aria-label="Conscious Club Archive home">
+      <span class="record-mark" aria-hidden="true"><i></i></span>
+      <span>CONSCIOUS<br>CLUB ARCHIVE</span>
+    </a>
+    <nav aria-label="Archive sections">
+      <button class="nav-tab is-active" data-view="archive">Archive</button>
+      <button class="nav-tab" data-view="alltime">All-time table</button>
+    </nav>
+  </header>
+
+  <main id="top">
+    <section class="intro">
+      <p class="eyebrow">Est. Season 1 · Six people · Zero restraint</p>
+      <h1>Every song. Every vote.<br><em>Every wild comment.</em></h1>
+      <p class="intro-copy">The full Conscious Club listening history, from the first submission to Floor 11.</p>
+      <div class="stats" id="stats" aria-label="Archive totals"></div>
+    </section>
+
+    <section class="workspace" id="archive-view">
+      <div class="controls" aria-label="Archive filters">
+        <label>
+          <span>Season</span>
+          <select id="season-select"></select>
+        </label>
+        <label class="search-control">
+          <span>Find a song, artist, person, or round</span>
+          <input id="search" type="search" placeholder="Try “Neil”, “train”, or “Beyoncé”…" autocomplete="off">
+        </label>
+      </div>
+
+      <div class="season-heading">
+        <div>
+          <p class="kicker" id="season-kicker"></p>
+          <h2 id="season-title"></h2>
+        </div>
+        <p id="season-meta" class="season-meta"></p>
+      </div>
+
+      <section class="podium-panel" aria-labelledby="standings-heading">
+        <div class="panel-heading">
+          <div>
+            <p class="kicker">Final standings</p>
+            <h3 id="standings-heading">Season leaderboard</h3>
+          </div>
+          <button class="text-button" id="toggle-standings" aria-expanded="false">Show full table</button>
+        </div>
+        <div id="podium" class="podium"></div>
+        <div id="full-standings" class="full-standings" hidden></div>
+      </section>
+
+      <div class="rounds-heading">
+        <div>
+          <p class="kicker">The playlists</p>
+          <h3>Rounds &amp; submissions</h3>
+        </div>
+        <p id="result-count" aria-live="polite"></p>
+      </div>
+      <div id="rounds" class="rounds"></div>
+      <div id="empty-state" class="empty-state" hidden>
+        <span aria-hidden="true">⌁</span>
+        <h3>No deep cuts found</h3>
+        <p>Try another name, song, artist, or round.</p>
+      </div>
+    </section>
+
+    <section class="workspace alltime-view" id="alltime-view" hidden>
+      <div class="season-heading">
+        <div>
+          <p class="kicker">Eleven seasons, one table</p>
+          <h2>All-time standings</h2>
+        </div>
+        <p class="season-meta">Total points across every submission in the archive.</p>
+      </div>
+      <div id="alltime-table" class="leaderboard-table"></div>
+      <p class="fine-print">Points reflect the Music League exports. Ties are displayed alphabetically.</p>
+    </section>
+  </main>
+
+  <footer>
+    <span>The Conscious Club Archive</span>
+    <span>Data through Floor 11 · September 2026</span>
+  </footer>
+
+  <script src="app.js" defer></script>
+</body>
+</html>
