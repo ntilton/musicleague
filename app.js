@@ -185,7 +185,7 @@ function showView(view) {
 
 async function init() {
   try {
-    const response = await fetch("data.json");
+    const response = await fetch("data.json?v=20260928-2");
     if (!response.ok) throw new Error("Data unavailable");
     archive = await response.json();
     renderStats();
