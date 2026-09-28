@@ -6,7 +6,7 @@
   <meta name="description" content="Eleven seasons of Conscious Club songs, votes, comments, and questionable taste.">
   <title>The Conscious Club Archive</title>
   <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='12' fill='%230a0d12'/%3E%3Ccircle cx='32' cy='32' r='22' fill='%23c7ff5e'/%3E%3Ccircle cx='32' cy='32' r='8' fill='%230a0d12'/%3E%3Ccircle cx='32' cy='32' r='3' fill='%23f3f0e8'/%3E%3C/svg%3E">
-  <link rel="stylesheet" href="styles.css?v=20260928-2">
+  <link rel="stylesheet" href="styles.css?v=20260928-3">
 </head>
 <body>
   <header class="site-header">
@@ -16,6 +16,8 @@
     </a>
     <nav aria-label="Archive sections">
       <button class="nav-tab is-active" data-view="archive">Archive</button>
+      <button class="nav-tab" data-view="search">Search</button>
+      <button class="nav-tab" data-view="reports">Reports</button>
       <button class="nav-tab" data-view="alltime">All-time table</button>
     </nav>
   </header>
@@ -33,10 +35,6 @@
         <label>
           <span>Season</span>
           <select id="season-select"></select>
-        </label>
-        <label class="search-control">
-          <span>Find a song, artist, person, or round</span>
-          <input id="search" type="search" placeholder="Try “Neil”, “train”, or “Beyoncé”…" autocomplete="off">
         </label>
       </div>
 
@@ -75,6 +73,59 @@
       </div>
     </section>
 
+    <section class="workspace search-view" id="search-view" hidden>
+      <div class="section-intro compact-intro">
+        <p class="kicker">Every season · every field</p>
+        <h2>Search the whole archive</h2>
+        <p>Find songs, artists, albums, people, rounds, descriptions, submission notes, and comments across all eleven seasons.</p>
+      </div>
+      <div class="global-search-panel">
+        <label class="global-search-control">
+          <span>Search all archive data</span>
+          <input id="global-search" type="search" placeholder="Try “train”, “Beyoncé”, “Randall”, or a comment phrase…" autocomplete="off">
+        </label>
+        <label>
+          <span>Result type</span>
+          <select id="search-type">
+            <option value="all">Everything</option>
+            <option value="songs">Songs</option>
+            <option value="people">People</option>
+            <option value="rounds">Rounds</option>
+            <option value="comments">Comments &amp; notes</option>
+          </select>
+        </label>
+      </div>
+      <div id="search-summary" class="search-summary" aria-live="polite"></div>
+      <div id="global-results" class="global-results"></div>
+    </section>
+
+    <section class="workspace reports-view" id="reports-view" hidden>
+      <div class="section-intro compact-intro">
+        <p class="kicker">The club, by the numbers</p>
+        <h2>Records &amp; findings</h2>
+        <p>All-time highs, repeat favorites, close finishes, and the patterns hiding in eleven seasons.</p>
+      </div>
+      <div id="report-facts" class="report-facts"></div>
+      <div class="report-grid">
+        <section class="report-panel">
+          <div class="report-heading"><p class="kicker">Top tracks</p><h3>Highest-scoring songs</h3></div>
+          <div id="top-songs-report" class="report-list"></div>
+        </section>
+        <section class="report-panel">
+          <div class="report-heading"><p class="kicker">Repeat appearances</p><h3>Most-picked artists</h3></div>
+          <div id="top-artists-report" class="report-list"></div>
+        </section>
+      </div>
+      <section class="report-panel wide-report">
+        <div class="report-heading"><p class="kicker">Player report</p><h3>Points, pace &amp; season wins</h3></div>
+        <div id="player-report" class="report-table"></div>
+      </section>
+      <section class="findings-panel">
+        <div class="report-heading"><p class="kicker">Worth knowing</p><h3>Interesting data finds</h3></div>
+        <div id="interesting-findings" class="findings-grid"></div>
+      </section>
+    </section>
+
     <section class="workspace alltime-view" id="alltime-view" hidden>
       <div class="season-heading">
         <div>
@@ -93,6 +144,6 @@
     <span>Data through Floor 11 · September 2026</span>
   </footer>
 
-  <script src="app.js?v=20260928-2" defer></script>
+  <script src="app.js?v=20260928-3" defer></script>
 </body>
 </html>
