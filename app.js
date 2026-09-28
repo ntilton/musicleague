@@ -10,9 +10,26 @@ const number = new Intl.NumberFormat("en-US");
 let archive;
 let activeSeason;
 
+const liveSeason = {
+  label: "Business Casual",
+  description: "The one where the equinox finally broke the heat dome",
+  leagueUrl: "https://app.musicleague.com/l/a951c9733a0d4250b1117c0767539aa4/",
+  playerCount: 6,
+  playerCapacity: 10,
+  songsPerRound: 5,
+  currentRound: {
+    number: 1,
+    name: "Sharing is Caring",
+    description: "Yes, it's been too long. Surely you've stumbled upon some gems and thought to yourself, \"I can fit this into a future music league round\". Well this is the round for you. 5 songs, no theme, please help us expand our al gore isms.",
+    phase: "Voting",
+    deadline: "October 3, 2026 at 2:00 PM",
+    playlistUrl: "https://open.spotify.com/playlist/0XmVC7EvxVKQMLWE3AXKL4",
+  },
+};
+
 function renderStats() {
   const labels = [
-    [archive.totals.seasons, "seasons"],
+    [archive.totals.seasons, "completed seasons"],
     [archive.totals.rounds, "rounds"],
     [archive.totals.submissions, "songs"],
     [archive.totals.comments, "comments"],
@@ -26,35 +43,35 @@ function renderStats() {
 }
 
 function renderActiveSeason() {
-  const season = archive.seasons[0];
   const root = $("#active-season-card");
   root.replaceChildren();
   const copy = make("div", "active-season-copy");
   copy.append(
     make("p", "kicker", "Active season"),
-    make("h2", "", season.label),
-    make("p", "", `${season.roundCount} rounds · ${season.submissionCount} songs · ${number.format(season.voteCount)} votes`),
+    make("h2", "", liveSeason.label),
+    make("p", "", liveSeason.description),
+    make("p", "active-leader", `${liveSeason.playerCount} of ${liveSeason.playerCapacity} players · ${liveSeason.songsPerRound} songs per round`),
   );
-  const leader = season.leaderboard[0];
-  if (leader) copy.append(make("p", "active-leader", `Current leader: ${leader.name} with ${number.format(leader.points)} points`));
+
+  const round = make("div", "active-round");
+  round.append(
+    make("span", "active-round-label", `Current round · ${liveSeason.currentRound.phase}`),
+    make("strong", "", liveSeason.currentRound.name),
+    make("p", "", liveSeason.currentRound.description),
+    make("span", "active-deadline", `Votes due ${liveSeason.currentRound.deadline}`),
+  );
 
   const actions = make("div", "active-season-actions");
-  const explore = make("button", "active-button", "Explore active season");
-  explore.addEventListener("click", () => {
-    $("#season-select").value = String(season.number);
-    renderSeason();
-    showView("archive");
-  });
-  actions.append(explore);
-  const recentPlaylists = season.rounds.filter((round) => round.playlistUrl).slice(-3).reverse();
-  recentPlaylists.forEach((round) => {
-    const link = make("a", "active-playlist-link", `Round ${round.number} playlist ↗`);
-    link.href = round.playlistUrl;
-    link.target = "_blank";
-    link.rel = "noreferrer";
-    actions.append(link);
-  });
-  root.append(copy, actions);
+  const explore = make("a", "active-button", "Open Business Casual ↗");
+  explore.href = liveSeason.leagueUrl;
+  explore.target = "_blank";
+  explore.rel = "noreferrer";
+  const playlist = make("a", "active-playlist-link", "Listen to Sharing is Caring ↗");
+  playlist.href = liveSeason.currentRound.playlistUrl;
+  playlist.target = "_blank";
+  playlist.rel = "noreferrer";
+  actions.append(explore, playlist);
+  root.append(copy, round, actions);
 }
 
 function renderSeasonOptions() {

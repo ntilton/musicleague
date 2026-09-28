@@ -139,7 +139,7 @@ h1 em { color: var(--acid); font-weight: 400; }
 
 .active-season-card {
   display: grid;
-  grid-template-columns: minmax(0, 1.4fr) minmax(220px, .8fr);
+  grid-template-columns: minmax(0, 1fr) minmax(260px, 1fr) minmax(200px, .65fr);
   gap: 30px;
   align-items: end;
   margin-top: 28px;
@@ -151,6 +151,11 @@ h1 em { color: var(--acid); font-weight: 400; }
 .active-season-copy h2 { margin: 0 0 10px; font-size: clamp(2.5rem, 6vw, 4.8rem); }
 .active-season-copy > p:not(.kicker) { margin-bottom: 6px; color: var(--muted); }
 .active-season-copy .active-leader { color: var(--paper); font-weight: 750; }
+.active-round { padding: 17px 18px; border-left: 2px solid var(--acid); background: rgba(10,13,18,.36); }
+.active-round-label { display: block; margin-bottom: 7px; color: var(--acid); font-size: .7rem; font-weight: 850; letter-spacing: .07em; text-transform: uppercase; }
+.active-round > strong { display: block; font-family: Georgia, serif; font-size: 1.35rem; font-weight: 500; }
+.active-round p { display: -webkit-box; margin: 7px 0 12px; overflow: hidden; color: var(--muted); font-size: .8rem; -webkit-box-orient: vertical; -webkit-line-clamp: 3; }
+.active-deadline { color: var(--paper); font-size: .76rem; font-weight: 750; }
 .active-season-actions { display: grid; gap: 8px; justify-items: stretch; }
 .active-button, .active-playlist-link { display: block; padding: 11px 14px; border: 1px solid var(--line); border-radius: 999px; font-size: .78rem; font-weight: 800; text-align: center; text-decoration: none; }
 .active-button { border-color: var(--acid); background: var(--acid); color: var(--ink); cursor: pointer; }
