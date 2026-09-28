@@ -538,7 +538,9 @@ function renderReports() {
     if (!artistBreadth.has(submission.submitter)) artistBreadth.set(submission.submitter, new Set());
     artistBreadth.get(submission.submitter).add(normalized(submission.artists));
   });
-  const deepestCatalog = [...artistBreadth.entries()].sort((a, b) => b[1].size - a[1].size)[0];
+  const catalogBreadth = [...artistBreadth.entries()].sort((a, b) => b[1].size - a[1].size);
+  const deepestCatalogCount = catalogBreadth[0][1].size;
+  const deepestCatalogNames = catalogBreadth.filter(([, artistsSet]) => artistsSet.size === deepestCatalogCount).map(([name]) => name);
   const peakSeason = archive.seasons.map((season) => ({ season, winner: season.leaderboard[0] }))
     .sort((a, b) => b.winner.points - a.winner.points)[0];
 
@@ -547,7 +549,7 @@ function renderReports() {
     ["The biggest runaway", `${runaway.season.label} ended with a ${runaway.margin}-point gap between first and second.`],
     ["The conversation starter", `“${mostDiscussed.submission.title}” by ${mostDiscussed.submission.artists} drew the most written reactions.`],
     ["The repeat favorite", `${artists[0].name} appeared ${artists[0].picks} times and collected ${number.format(artists[0].points)} points.`],
-    ["The deepest catalog", `${deepestCatalog[0]} submitted ${number.format(deepestCatalog[1].size)} different artists across the archive.`],
+    ["The deepest catalog", `${deepestCatalogNames.join(" and ")} each submitted ${number.format(deepestCatalogCount)} different artists across the archive.`],
     ["The biggest season total", `${peakSeason.winner.name} scored ${number.format(peakSeason.winner.points)} points in ${peakSeason.season.label}.`],
   ];
   const findingsRoot = $("#interesting-findings");
