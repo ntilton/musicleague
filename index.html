@@ -6,7 +6,7 @@
   <meta name="description" content="Eleven seasons of Conscious Club songs, votes, comments, and questionable taste.">
   <title>The Conscious Club Archive</title>
   <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='12' fill='%230a0d12'/%3E%3Ccircle cx='32' cy='32' r='22' fill='%23c7ff5e'/%3E%3Ccircle cx='32' cy='32' r='8' fill='%230a0d12'/%3E%3Ccircle cx='32' cy='32' r='3' fill='%23f3f0e8'/%3E%3C/svg%3E">
-  <link rel="stylesheet" href="styles.css?v=20260928-9">
+  <link rel="stylesheet" href="styles.css?v=20260928-10">
 </head>
 <body>
   <header class="site-header">
@@ -21,6 +21,7 @@
       <button class="nav-tab is-active" data-view="archive">Archive</button>
       <button class="nav-tab" data-view="search">Search</button>
       <button class="nav-tab" data-view="reports">Reports</button>
+      <button class="nav-tab" data-view="playlists">Playlists</button>
       <button class="nav-tab" data-view="alltime">All-time table</button>
       <a class="nav-tab nav-link" href="https://open.spotify.com/playlist/56s2ur5UHrPtWcbqVpNv4Z" target="_blank" rel="noreferrer">Master playlist <span aria-hidden="true">↗</span></a>
     </nav>
@@ -50,6 +51,7 @@
         </div>
         <div class="season-actions">
           <p id="season-meta" class="season-meta"></p>
+          <a id="full-season-playlist" class="season-master-link" target="_blank" rel="noreferrer">Full season playlist ↗</a>
           <details class="season-playlists" id="season-playlists">
             <summary>Archived season playlists <span aria-hidden="true">+</span></summary>
             <div id="season-playlist-links" class="season-playlist-links"></div>
@@ -110,6 +112,15 @@
       <div id="global-results" class="global-results"></div>
     </section>
 
+    <section class="workspace playlists-view" id="playlists-view" hidden>
+      <div class="section-intro compact-intro">
+        <p class="kicker">Every season, start to finish</p>
+        <h2>The playlist shelf</h2>
+        <p>Listen to the complete 912-song archive or pick one season at a time.</p>
+      </div>
+      <div id="playlist-hub" class="playlist-hub"></div>
+    </section>
+
     <section class="workspace reports-view" id="reports-view" hidden>
       <div class="section-intro compact-intro">
         <p class="kicker">The club, by the numbers</p>
@@ -155,6 +166,6 @@
     <span>Archive through Floor 11 · Active: Business Casual</span>
   </footer>
 
-  <script src="app.js?v=20260928-9" defer></script>
+  <script src="app.js?v=20260928-10" defer></script>
 </body>
 </html>

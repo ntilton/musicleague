@@ -27,6 +27,21 @@ const liveSeason = {
   },
 };
 
+const masterPlaylistUrl = "https://open.spotify.com/playlist/56s2ur5UHrPtWcbqVpNv4Z";
+const seasonPlaylistUrls = new Map([
+  [1, "https://open.spotify.com/playlist/5IlkvJG79e5jhFmGIq1Z6J"],
+  [2, "https://open.spotify.com/playlist/3Lm9GAQkHvgtkxMeWEDG76"],
+  [3, "https://open.spotify.com/playlist/4QG6gFEDQ9SLPk7Uh3deZe"],
+  [4, "https://open.spotify.com/playlist/4bRYDyA9RX7mM1lglC5kE5"],
+  [5, "https://open.spotify.com/playlist/2wV1mZaUGQQ3Ja4WK8Ku0b"],
+  [6, "https://open.spotify.com/playlist/1iT4juLh16bHP35d0zSaVG"],
+  [7, "https://open.spotify.com/playlist/0h8Or8tPIrD0z9a3qjfvP1"],
+  [8, "https://open.spotify.com/playlist/16J5BRg5uk30mDgN1IdWzY"],
+  [9, "https://open.spotify.com/playlist/0xnpOg6b4uin1iTTMDZ6om"],
+  [10, "https://open.spotify.com/playlist/5cXf4jxGqfv6vFnyOc6Ynh"],
+  [11, "https://open.spotify.com/playlist/4daEy7Y5qsOeJVXFXinxRG"],
+]);
+
 function renderStats() {
   const labels = [
     [archive.totals.seasons, "completed seasons"],
@@ -195,9 +210,10 @@ function renderSeason() {
   $("#season-kicker").textContent = `Archive volume ${String(activeSeason.number).padStart(2, "0")}`;
   $("#season-title").textContent = activeSeason.label;
   $("#season-meta").textContent = `${activeSeason.roundCount} rounds · ${activeSeason.submissionCount} submissions · ${number.format(activeSeason.voteCount)} votes`;
+  $("#full-season-playlist").href = seasonPlaylistUrls.get(activeSeason.number);
   const playlistSummary = $("#season-playlists summary");
   playlistSummary.replaceChildren(
-    document.createTextNode(`${activeSeason.label} playlists `),
+    document.createTextNode(`${activeSeason.label} round playlists `),
     make("span", "", "+"),
   );
   const playlistRoot = $("#season-playlist-links");
@@ -227,6 +243,37 @@ function renderAllTime() {
       row.append(stat);
     });
     root.append(row);
+  });
+}
+
+function playlistCard(title, detail, url, featured = false) {
+  const card = make("a", `playlist-hub-card${featured ? " is-featured" : ""}`);
+  card.href = url;
+  card.target = "_blank";
+  card.rel = "noreferrer";
+  card.append(
+    make("span", "playlist-card-label", featured ? "Complete archive" : "Season playlist"),
+    make("h3", "", title),
+    make("p", "", detail),
+    make("span", "playlist-card-action", "Listen on Spotify ↗"),
+  );
+  return card;
+}
+
+function renderPlaylistHub() {
+  const root = $("#playlist-hub");
+  root.replaceChildren(playlistCard(
+    "All submissions",
+    `${number.format(archive.totals.submissions)} songs across ${archive.totals.seasons} completed seasons`,
+    masterPlaylistUrl,
+    true,
+  ));
+  archive.seasons.forEach((season) => {
+    root.append(playlistCard(
+      season.label,
+      `${number.format(season.submissionCount)} songs · ${season.roundCount} rounds`,
+      seasonPlaylistUrls.get(season.number),
+    ));
   });
 }
 
@@ -607,7 +654,7 @@ function renderReports() {
 }
 
 function showView(view) {
-  ["archive", "search", "reports", "alltime"].forEach((name) => {
+  ["archive", "search", "reports", "playlists", "alltime"].forEach((name) => {
     $(`#${name}-view`).hidden = name !== view;
   });
   document.querySelectorAll(".nav-tab").forEach((tab) => tab.classList.toggle("is-active", tab.dataset.view === view));
@@ -632,6 +679,7 @@ async function init() {
     renderSeasonOptions();
     renderSeason();
     renderAllTime();
+    renderPlaylistHub();
     renderGlobalSearch();
     renderReports();
   } catch (error) {
