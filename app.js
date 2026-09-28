@@ -336,7 +336,6 @@ function resultSummary(meta, title, detail, foot, matches, query) {
 function songSearchFields(submission) {
   return [
     ["Song title", submission.title], ["Artist", submission.artists], ["Album", submission.album],
-    ["Submitter", submission.submitter],
   ];
 }
 
@@ -345,7 +344,7 @@ function roundSearchFields(round) {
 }
 
 function commentSearchFields(comment) {
-  return [["Author", comment.author], [comment.kind === "note" ? "Submission note" : "Comment text", comment.text]];
+  return [[comment.kind === "note" ? "Submission note" : "Comment text", comment.text]];
 }
 
 function detailStat(label, value) {
@@ -519,7 +518,8 @@ function renderGlobalSearch() {
   ];
   const visibleGroups = groups.filter(([key]) => type === "all" || type === key);
   const total = visibleGroups.reduce((sum, [, , items]) => sum + items.length, 0);
-  summary.textContent = `${number.format(total)} ${total === 1 ? "result" : "results"} for “${raw}” across the full archive.`;
+  const scopeLabel = type === "all" ? "the full archive" : groups.find(([key]) => key === type)?.[1].toLowerCase();
+  summary.textContent = `${number.format(total)} ${total === 1 ? "result" : "results"} for “${raw}” across ${scopeLabel}.`;
   visibleGroups.forEach(([, title, items, renderer]) => {
     const section = resultSection(title, items, renderer);
     if (section) root.append(section);
