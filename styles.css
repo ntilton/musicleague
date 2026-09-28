@@ -221,13 +221,13 @@ select:focus, input:focus { border-color: var(--acid); box-shadow: 0 0 0 3px rgb
 .text-button:hover, .text-button:focus-visible { text-decoration: underline; outline: none; }
 
 .podium { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-top: 30px; }
-.podium-card { position: relative; min-height: 140px; padding: 21px; overflow: hidden; border-radius: 14px; background: var(--panel-2); }
+.podium-card { display: grid; grid-template-columns: minmax(0, 1fr) auto; grid-template-rows: 1fr auto; gap: 10px 18px; min-height: 140px; padding: 21px; overflow: hidden; border-radius: 14px; background: var(--panel-2); }
 .podium-card:first-child { background: var(--acid); color: var(--ink); }
 .podium-card:nth-child(2) { background: var(--blue); color: var(--ink); }
 .podium-card:nth-child(3) { background: var(--orange); color: var(--ink); }
-.podium-rank { font-family: Georgia, serif; font-size: 4.8rem; line-height: .8; opacity: .28; }
-.podium-name { position: absolute; right: 18px; bottom: 38px; left: 18px; font-size: clamp(1.05rem, 2vw, 1.35rem); font-weight: 850; }
-.podium-points { position: absolute; right: 18px; bottom: 14px; left: 18px; font-size: .8rem; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; }
+.podium-rank { grid-column: 2; grid-row: 1; align-self: start; font-family: Georgia, serif; font-size: 3.25rem; line-height: .8; opacity: .42; }
+.podium-name { grid-column: 1; grid-row: 1; align-self: end; min-width: 0; font-size: clamp(1.05rem, 2vw, 1.35rem); font-weight: 850; }
+.podium-points { grid-column: 1 / -1; grid-row: 2; font-size: .8rem; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; }
 
 .full-standings { margin-top: 22px; border-top: 1px solid var(--line); }
 .standing-row, .leader-row { display: grid; align-items: center; gap: 16px; padding: 13px 4px; border-bottom: 1px solid var(--line); }
