@@ -66,7 +66,7 @@ function renderActiveSeason() {
   explore.href = liveSeason.leagueUrl;
   explore.target = "_blank";
   explore.rel = "noreferrer";
-  const playlist = make("a", "active-playlist-link", "Listen to Sharing is Caring ↗");
+  const playlist = make("a", "active-playlist-link", "Current round playlist ↗");
   playlist.href = liveSeason.currentRound.playlistUrl;
   playlist.target = "_blank";
   playlist.rel = "noreferrer";
@@ -195,6 +195,11 @@ function renderSeason() {
   $("#season-kicker").textContent = `Archive volume ${String(activeSeason.number).padStart(2, "0")}`;
   $("#season-title").textContent = activeSeason.label;
   $("#season-meta").textContent = `${activeSeason.roundCount} rounds · ${activeSeason.submissionCount} submissions · ${number.format(activeSeason.voteCount)} votes`;
+  const playlistSummary = $("#season-playlists summary");
+  playlistSummary.replaceChildren(
+    document.createTextNode(`${activeSeason.label} playlists `),
+    make("span", "", "+"),
+  );
   const playlistRoot = $("#season-playlist-links");
   playlistRoot.replaceChildren();
   activeSeason.rounds.slice().reverse().forEach((round) => {
@@ -242,27 +247,58 @@ function resultSection(title, items, renderItem) {
   return section;
 }
 
-function unique(values) {
-  return [...new Set(values)];
+function matchedFields(fields, query) {
+  const seen = new Set();
+  return fields.filter(([, value]) => value && normalized(String(value)).includes(query)).filter(([label, value]) => {
+    const key = `${label}\n${value}`;
+    if (seen.has(key)) return false;
+    seen.add(key);
+    return true;
+  });
 }
 
-function matchReasons(fields, query) {
-  return unique(fields.filter(([, value]) => value && normalized(String(value)).includes(query)).map(([label]) => label));
+function matchExcerpt(value, query, limit = 170) {
+  const text = String(value).replace(/\s+/g, " ").trim();
+  if (text.length <= limit) return text;
+  const index = normalized(text).indexOf(query);
+  const start = Math.max(0, index - Math.floor((limit - query.length) / 2));
+  const end = Math.min(text.length, start + limit);
+  return `${start > 0 ? "…" : ""}${text.slice(start, end).trim()}${end < text.length ? "…" : ""}`;
 }
 
-function reasonRow(reasons) {
+function reasonRow(matches, query) {
   const row = make("div", "match-reasons");
-  row.append(make("span", "match-label", "Matched in"));
-  reasons.forEach((reason) => row.append(make("span", "match-chip", reason)));
+  row.append(make("span", "match-label", "Why this matched"));
+  matches.slice(0, 3).forEach(([label, value]) => {
+    const reason = make("p", "match-excerpt");
+    reason.append(make("strong", "", `${label}: `), document.createTextNode(matchExcerpt(value, query)));
+    row.append(reason);
+  });
+  if (matches.length > 3) row.append(make("span", "match-more", `+${matches.length - 3} more matching fields`));
   return row;
 }
 
-function resultSummary(meta, title, detail, foot, reasons) {
+function resultSummary(meta, title, detail, foot, matches, query) {
   const summary = make("summary", "search-card-summary");
   const copy = make("div", "search-summary-copy");
-  copy.append(make("p", "result-meta", meta), make("h4", "", title), make("p", "result-detail", detail), make("p", "result-foot", foot), reasonRow(reasons));
+  copy.append(make("p", "result-meta", meta), make("h4", "", title), make("p", "result-detail", detail), make("p", "result-foot", foot), reasonRow(matches, query));
   summary.append(copy, make("span", "search-expand", "+"));
   return summary;
+}
+
+function songSearchFields(submission) {
+  return [
+    ["Song title", submission.title], ["Artist", submission.artists], ["Album", submission.album],
+    ["Submitter", submission.submitter],
+  ];
+}
+
+function roundSearchFields(round) {
+  return [["Round title", round.name], ["Round description", round.description]];
+}
+
+function commentSearchFields(comment) {
+  return [["Author", comment.author], [comment.kind === "note" ? "Submission note" : "Comment text", comment.text]];
 }
 
 function detailStat(label, value) {
@@ -272,19 +308,15 @@ function detailStat(label, value) {
 }
 
 function searchSongCard({ season, round, submission }, query) {
-  const comments = submission.comments.map((comment) => [`Comment by ${comment.author}`, `${comment.author} ${comment.text}`]);
-  const reasons = matchReasons([
-    ["Season", season.label], ["Round title", round.name], ["Round description", round.description],
-    ["Song title", submission.title], ["Artist", submission.artists], ["Album", submission.album],
-    ["Submitter", submission.submitter], ["Submission note", submission.submitterComment], ...comments,
-  ], query);
+  const matches = matchedFields(songSearchFields(submission), query);
   const card = make("details", "search-card song-result");
   card.append(resultSummary(
     `${season.label} · Round ${round.number} · ${round.name}`,
     submission.title,
     `${submission.artists}${submission.album ? ` · ${submission.album}` : ""}`,
     `Picked by ${submission.submitter} · ${number.format(submission.points)} points · ${submission.comments.length} comments`,
-    reasons,
+    matches,
+    query,
   ));
   const content = make("div", "search-card-content");
   const stats = make("div", "detail-stats");
@@ -320,14 +352,15 @@ function searchSongCard({ season, round, submission }, query) {
 }
 
 function searchRoundCard({ season, round }, query) {
-  const reasons = matchReasons([["Season", season.label], ["Round title", round.name], ["Round description", round.description]], query);
+  const matches = matchedFields(roundSearchFields(round), query);
   const card = make("details", "search-card round-result");
   card.append(resultSummary(
     `${season.label} · Round ${round.number}`,
     round.name,
     round.description || "No round description.",
     `${round.submissions.length} submissions`,
-    reasons,
+    matches,
+    query,
   ));
   const content = make("div", "search-card-content");
   const list = make("div", "mini-song-list");
@@ -349,14 +382,15 @@ function searchRoundCard({ season, round }, query) {
 }
 
 function searchPersonCard(person, query) {
-  const reasons = matchReasons([["Member name", person.name]], query);
+  const matches = matchedFields([["Member name", person.name]], query);
   const card = make("details", "search-card person-result");
   card.append(resultSummary(
     "Club member",
     person.name,
     `${number.format(person.points)} all-time points`,
     `${person.submissions} songs across ${person.seasons} seasons`,
-    reasons,
+    matches,
+    query,
   ));
   const content = make("div", "search-card-content");
   const picks = allSubmissions().filter(({ submission }) => submission.submitter === person.name)
@@ -376,10 +410,7 @@ function searchPersonCard(person, query) {
 }
 
 function searchCommentCard({ season, round, submission, author, text, kind }, query) {
-  const reasons = matchReasons([
-    ["Author", author], [kind === "note" ? "Submission note" : "Comment text", text],
-    ["Song title", submission.title], ["Artist", submission.artists], ["Round", round.name], ["Season", season.label],
-  ], query);
+  const matches = matchedFields(commentSearchFields({ author, text, kind }), query);
   const card = make("details", "search-card comment-result");
   const preview = text.length > 150 ? `${text.slice(0, 147)}…` : text;
   card.append(resultSummary(
@@ -387,7 +418,8 @@ function searchCommentCard({ season, round, submission, author, text, kind }, qu
     `${author}${kind === "note" ? " · Submission note" : " · Comment"}`,
     preview,
     `Round ${round.number}: ${round.name}`,
-    reasons,
+    matches,
+    query,
   ));
   const content = make("div", "search-card-content");
   content.append(make("p", "comment-quote", text));
@@ -422,19 +454,15 @@ function renderGlobalSearch() {
   }
 
   const submissions = allSubmissions();
-  const songs = submissions.filter(({ season, round, submission }) => {
-    const comments = submission.comments.map((comment) => `${comment.author} ${comment.text}`).join(" ");
-    return normalized([season.label, round.name, round.description, submission.title, submission.album,
-      submission.artists, submission.submitter, submission.submitterComment, comments].join(" ")).includes(query);
-  });
+  const songs = submissions.filter(({ submission }) => matchedFields(songSearchFields(submission), query).length);
   const rounds = archive.seasons.flatMap((season) => season.rounds.map((round) => ({ season, round })))
-    .filter(({ season, round }) => normalized(`${season.label} ${round.name} ${round.description}`).includes(query));
+    .filter(({ round }) => matchedFields(roundSearchFields(round), query).length);
   const people = archive.allTimeLeaderboard.filter((person) => normalized(person.name).includes(query));
   const comments = submissions.flatMap(({ season, round, submission }) => {
     const rows = submission.comments.map((comment) => ({ season, round, submission, author: comment.author, text: comment.text, kind: "comment" }));
     if (submission.submitterComment) rows.unshift({ season, round, submission, author: submission.submitter, text: submission.submitterComment, kind: "note" });
     return rows;
-  }).filter((comment) => normalized(`${comment.author} ${comment.text} ${comment.submission.title} ${comment.submission.artists} ${comment.round.name} ${comment.season.label}`).includes(query));
+  }).filter((comment) => matchedFields(commentSearchFields(comment), query).length);
 
   const groups = [
     ["people", "People", people, (item) => searchPersonCard(item, query)],
