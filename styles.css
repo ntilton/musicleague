@@ -132,10 +132,30 @@ h1 em { color: var(--acid); font-weight: 400; }
   border-block: 1px solid var(--line);
 }
 
-.stat { padding: 18px 18px 18px 0; }
-.stat + .stat { padding-left: 20px; border-left: 1px solid var(--line); }
+.stat { padding: 18px 20px; text-align: center; }
+.stat + .stat { border-left: 1px solid var(--line); }
 .stat strong { display: block; font-family: Georgia, serif; font-size: clamp(1.75rem, 4vw, 2.6rem); line-height: 1; }
 .stat span { color: var(--muted); font-size: .76rem; font-weight: 750; letter-spacing: .08em; text-transform: uppercase; }
+
+.active-season-card {
+  display: grid;
+  grid-template-columns: minmax(0, 1.4fr) minmax(220px, .8fr);
+  gap: 30px;
+  align-items: end;
+  margin-top: 28px;
+  padding: clamp(22px, 4vw, 38px);
+  border: 1px solid rgba(199,255,94,.35);
+  border-radius: var(--radius);
+  background: linear-gradient(135deg, rgba(199,255,94,.11), rgba(122,199,255,.05));
+}
+.active-season-copy h2 { margin: 0 0 10px; font-size: clamp(2.5rem, 6vw, 4.8rem); }
+.active-season-copy > p:not(.kicker) { margin-bottom: 6px; color: var(--muted); }
+.active-season-copy .active-leader { color: var(--paper); font-weight: 750; }
+.active-season-actions { display: grid; gap: 8px; justify-items: stretch; }
+.active-button, .active-playlist-link { display: block; padding: 11px 14px; border: 1px solid var(--line); border-radius: 999px; font-size: .78rem; font-weight: 800; text-align: center; text-decoration: none; }
+.active-button { border-color: var(--acid); background: var(--acid); color: var(--ink); cursor: pointer; }
+.active-playlist-link { background: var(--panel); color: var(--paper); }
+.active-button:hover, .active-button:focus-visible, .active-playlist-link:hover, .active-playlist-link:focus-visible { filter: brightness(.92); outline: none; }
 
 .workspace { padding-bottom: 88px; }
 .controls {
@@ -172,6 +192,15 @@ select:focus, input:focus { border-color: var(--acid); box-shadow: 0 0 0 3px rgb
 .season-heading { padding: clamp(48px, 8vw, 86px) 0 30px; border-bottom: 1px solid var(--line); }
 .season-heading h2 { margin: 0; font-size: clamp(2.8rem, 7vw, 6rem); }
 .season-meta { max-width: 340px; margin: 0; color: var(--muted); text-align: right; }
+.season-actions { display: grid; gap: 12px; justify-items: end; }
+.season-playlists { position: relative; min-width: 260px; }
+.season-playlists summary { display: flex; justify-content: space-between; gap: 16px; padding: 10px 13px; border: 1px solid var(--line); border-radius: 999px; background: var(--panel); color: var(--paper); font-size: .78rem; font-weight: 800; cursor: pointer; list-style: none; }
+.season-playlists summary::-webkit-details-marker { display: none; }
+.season-playlists[open] summary { border-color: var(--acid); }
+.season-playlists[open] summary span { transform: rotate(45deg); }
+.season-playlist-links { position: absolute; z-index: 10; top: calc(100% + 8px); right: 0; display: grid; width: min(420px, calc(100vw - 40px)); max-height: 340px; padding: 8px; overflow: auto; border: 1px solid var(--line); border-radius: 14px; background: var(--panel); box-shadow: 0 18px 50px rgba(0,0,0,.35); }
+.season-playlist-links a { padding: 10px 12px; border-radius: 9px; color: var(--muted); font-size: .8rem; text-decoration: none; }
+.season-playlist-links a:hover, .season-playlist-links a:focus-visible { background: var(--panel-2); color: var(--acid); outline: none; }
 
 .podium-panel {
   margin: 34px 0 62px;
@@ -273,13 +302,35 @@ select:focus, input:focus { border-color: var(--acid); box-shadow: 0 0 0 3px rgb
 .result-group-heading h3 { margin: 0; font-family: Georgia, serif; font-size: 1.8rem; font-weight: 500; }
 .result-total { display: grid; min-width: 30px; height: 30px; place-items: center; padding: 0 9px; border-radius: 999px; background: var(--acid); color: var(--ink); font-size: .78rem; font-weight: 850; }
 .result-cards { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
-.search-card { position: relative; min-width: 0; padding: 20px; border: 1px solid var(--line); border-radius: 14px; background: var(--panel); }
-.search-card h4 { margin: 5px 0 4px; padding-right: 110px; font-family: Georgia, serif; font-size: 1.35rem; font-weight: 500; line-height: 1.15; }
+.search-card { position: relative; min-width: 0; overflow: hidden; border: 1px solid var(--line); border-radius: 14px; background: var(--panel); }
+.search-card[open] { border-color: #455364; }
+.search-card-summary { display: grid; grid-template-columns: minmax(0, 1fr) 34px; gap: 14px; align-items: center; padding: 20px; cursor: pointer; list-style: none; }
+.search-card-summary::-webkit-details-marker { display: none; }
+.search-summary-copy { min-width: 0; }
+.search-card h4 { margin: 5px 0 4px; font-family: Georgia, serif; font-size: 1.35rem; font-weight: 500; line-height: 1.15; }
 .result-meta { margin: 0; color: var(--acid); font-size: .7rem; font-weight: 800; letter-spacing: .06em; text-transform: uppercase; }
 .result-detail { margin: 0 0 16px; color: var(--muted); }
 .result-foot { margin: 0; color: #cbd1d8; font-size: .8rem; }
-.result-link { position: absolute; top: 18px; right: 18px; color: var(--acid); font-size: .76rem; font-weight: 800; text-decoration: none; }
-.result-link:hover, .result-link:focus-visible { text-decoration: underline; outline: none; }
+.search-expand { display: grid; width: 34px; height: 34px; place-items: center; border-radius: 50%; background: var(--panel-2); color: var(--acid); font-size: 1.25rem; transition: transform .2s ease; }
+.search-card[open] .search-expand { transform: rotate(45deg); }
+.match-reasons { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; margin-top: 12px; }
+.match-label { color: var(--muted); font-size: .7rem; font-weight: 750; text-transform: uppercase; }
+.match-chip { padding: 3px 8px; border-radius: 999px; background: rgba(199,255,94,.12); color: var(--acid); font-size: .7rem; font-weight: 750; }
+.search-card-content { padding: 0 20px 20px; border-top: 1px solid var(--line); }
+.detail-stats { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; padding: 18px 0; }
+.detail-stat { min-width: 0; padding: 10px; border-radius: 9px; background: var(--panel-2); }
+.detail-stat span, .detail-stat strong { display: block; overflow: hidden; text-overflow: ellipsis; }
+.detail-stat span { color: var(--muted); font-size: .68rem; font-weight: 750; letter-spacing: .05em; text-transform: uppercase; }
+.detail-stat strong { margin-top: 3px; font-size: .85rem; white-space: nowrap; }
+.search-notes { display: grid; gap: 8px; margin-bottom: 16px; }
+.search-notes p { margin: 0; padding: 12px; border-left: 2px solid var(--orange); background: var(--panel-2); color: #d7dce2; font-size: .84rem; }
+.search-notes strong { color: var(--orange); }
+.expanded-link { display: inline-flex; margin-top: 12px; padding: 8px 12px; border-radius: 999px; background: var(--acid); color: var(--ink); font-size: .76rem; font-weight: 850; text-decoration: none; }
+.mini-song-list { display: grid; max-height: 440px; margin-top: 18px; overflow: auto; border: 1px solid var(--line); border-radius: 10px; }
+.mini-song-row { display: grid; grid-template-columns: minmax(130px, 1.4fr) minmax(100px, 1fr) minmax(90px, .8fr) auto; gap: 10px; padding: 9px 11px; border-bottom: 1px solid var(--line); font-size: .76rem; }
+.mini-song-row:last-child { border-bottom: 0; }
+.mini-song-row span { color: var(--muted); }
+.mini-song-row strong:last-child { color: var(--acid); text-align: right; }
 .comment-quote { margin: 14px 0 18px; color: #dce1e6; font-family: Georgia, serif; font-size: 1.06rem; line-height: 1.45; }
 
 .report-facts { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 10px; margin-bottom: 38px; }
@@ -313,7 +364,7 @@ select:focus, input:focus { border-color: var(--acid); box-shadow: 0 0 0 3px rgb
 .player-header { background: var(--panel-2); color: var(--muted); font-size: .7rem; font-weight: 800; letter-spacing: .06em; text-transform: uppercase; }
 .player-header span:first-child { text-align: left; }
 .findings-panel { margin-top: 16px; }
-.findings-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 10px; margin-top: 24px; }
+.findings-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; margin-top: 24px; }
 .finding-card { padding: 18px; border-left: 3px solid var(--acid); background: var(--panel-2); }
 .finding-card h4 { margin: 0 0 8px; font-family: Georgia, serif; font-size: 1.15rem; font-weight: 500; }
 .finding-card p { margin: 0; color: var(--muted); font-size: .86rem; }
@@ -331,15 +382,21 @@ footer { display: flex; justify-content: space-between; gap: 20px; padding: 28px
   .stat:nth-child(3) { border-left: 0; border-top: 1px solid var(--line); }
   .stat:nth-child(4) { border-top: 1px solid var(--line); }
   .controls { grid-template-columns: 1fr; }
+  .active-season-card { grid-template-columns: 1fr; align-items: start; }
   .global-search-panel, .result-cards, .report-grid { grid-template-columns: 1fr; }
   .report-facts { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .findings-grid { grid-template-columns: 1fr; }
   .player-row { grid-template-columns: minmax(120px, 1.4fr) repeat(2, minmax(58px, .6fr)); }
   .player-row > :nth-child(4), .player-row > :nth-child(5) { display: none; }
   .search-card h4 { padding-right: 0; }
-  .result-link { position: static; display: inline-block; margin-top: 12px; }
+  .detail-stats { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .mini-song-row { grid-template-columns: 1fr auto; }
+  .mini-song-row span { display: none; }
   .season-heading, .rounds-heading { align-items: start; flex-direction: column; }
+  .season-actions { width: 100%; justify-items: start; }
   .season-meta { text-align: left; }
+  .season-playlists { width: 100%; }
+  .season-playlist-links { right: auto; left: 0; }
   .podium { grid-template-columns: 1fr; }
   .podium-card { min-height: 104px; }
   .round-summary { grid-template-columns: 1fr auto; gap: 8px 12px; }

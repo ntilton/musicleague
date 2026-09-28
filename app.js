@@ -25,6 +25,38 @@ function renderStats() {
   });
 }
 
+function renderActiveSeason() {
+  const season = archive.seasons[0];
+  const root = $("#active-season-card");
+  root.replaceChildren();
+  const copy = make("div", "active-season-copy");
+  copy.append(
+    make("p", "kicker", "Active season"),
+    make("h2", "", season.label),
+    make("p", "", `${season.roundCount} rounds · ${season.submissionCount} songs · ${number.format(season.voteCount)} votes`),
+  );
+  const leader = season.leaderboard[0];
+  if (leader) copy.append(make("p", "active-leader", `Current leader: ${leader.name} with ${number.format(leader.points)} points`));
+
+  const actions = make("div", "active-season-actions");
+  const explore = make("button", "active-button", "Explore active season");
+  explore.addEventListener("click", () => {
+    $("#season-select").value = String(season.number);
+    renderSeason();
+    showView("archive");
+  });
+  actions.append(explore);
+  const recentPlaylists = season.rounds.filter((round) => round.playlistUrl).slice(-3).reverse();
+  recentPlaylists.forEach((round) => {
+    const link = make("a", "active-playlist-link", `Round ${round.number} playlist ↗`);
+    link.href = round.playlistUrl;
+    link.target = "_blank";
+    link.rel = "noreferrer";
+    actions.append(link);
+  });
+  root.append(copy, actions);
+}
+
 function renderSeasonOptions() {
   const select = $("#season-select");
   archive.seasons.forEach((season) => {
@@ -146,6 +178,18 @@ function renderSeason() {
   $("#season-kicker").textContent = `Archive volume ${String(activeSeason.number).padStart(2, "0")}`;
   $("#season-title").textContent = activeSeason.label;
   $("#season-meta").textContent = `${activeSeason.roundCount} rounds · ${activeSeason.submissionCount} submissions · ${number.format(activeSeason.voteCount)} votes`;
+  const playlistRoot = $("#season-playlist-links");
+  playlistRoot.replaceChildren();
+  activeSeason.rounds.slice().reverse().forEach((round) => {
+    if (!round.playlistUrl) return;
+    const link = make("a", "", `Round ${round.number} · ${round.name} ↗`);
+    link.href = round.playlistUrl;
+    link.target = "_blank";
+    link.rel = "noreferrer";
+    playlistRoot.append(link);
+  });
+  $("#season-playlists").hidden = playlistRoot.childElementCount === 0;
+  $("#season-playlists").open = false;
   renderPodium(activeSeason.leaderboard);
   renderRounds();
 }
@@ -181,60 +225,166 @@ function resultSection(title, items, renderItem) {
   return section;
 }
 
-function searchSongCard({ season, round, submission }) {
-  const card = make("article", "search-card song-result");
-  const meta = make("p", "result-meta", `${season.label} · Round ${round.number} · ${round.name}`);
-  const title = make("h4", "", submission.title);
-  const detail = make("p", "result-detail", `${submission.artists}${submission.album ? ` · ${submission.album}` : ""}`);
-  const foot = make("p", "result-foot", `Picked by ${submission.submitter} · ${number.format(submission.points)} points · ${submission.comments.length} comments`);
-  card.append(meta, title, detail, foot);
+function unique(values) {
+  return [...new Set(values)];
+}
+
+function matchReasons(fields, query) {
+  return unique(fields.filter(([, value]) => value && normalized(String(value)).includes(query)).map(([label]) => label));
+}
+
+function reasonRow(reasons) {
+  const row = make("div", "match-reasons");
+  row.append(make("span", "match-label", "Matched in"));
+  reasons.forEach((reason) => row.append(make("span", "match-chip", reason)));
+  return row;
+}
+
+function resultSummary(meta, title, detail, foot, reasons) {
+  const summary = make("summary", "search-card-summary");
+  const copy = make("div", "search-summary-copy");
+  copy.append(make("p", "result-meta", meta), make("h4", "", title), make("p", "result-detail", detail), make("p", "result-foot", foot), reasonRow(reasons));
+  summary.append(copy, make("span", "search-expand", "+"));
+  return summary;
+}
+
+function detailStat(label, value) {
+  const stat = make("div", "detail-stat");
+  stat.append(make("span", "", label), make("strong", "", value));
+  return stat;
+}
+
+function searchSongCard({ season, round, submission }, query) {
+  const comments = submission.comments.map((comment) => [`Comment by ${comment.author}`, `${comment.author} ${comment.text}`]);
+  const reasons = matchReasons([
+    ["Season", season.label], ["Round title", round.name], ["Round description", round.description],
+    ["Song title", submission.title], ["Artist", submission.artists], ["Album", submission.album],
+    ["Submitter", submission.submitter], ["Submission note", submission.submitterComment], ...comments,
+  ], query);
+  const card = make("details", "search-card song-result");
+  card.append(resultSummary(
+    `${season.label} · Round ${round.number} · ${round.name}`,
+    submission.title,
+    `${submission.artists}${submission.album ? ` · ${submission.album}` : ""}`,
+    `Picked by ${submission.submitter} · ${number.format(submission.points)} points · ${submission.comments.length} comments`,
+    reasons,
+  ));
+  const content = make("div", "search-card-content");
+  const stats = make("div", "detail-stats");
+  stats.append(
+    detailStat("Season", season.label), detailStat("Round", `${round.number} · ${round.name}`),
+    detailStat("Submitter", submission.submitter), detailStat("Points", number.format(submission.points)),
+    detailStat("Votes received", number.format(submission.voteCount)), detailStat("Round rank", `#${submission.rank}`),
+  );
+  content.append(stats);
+  if (submission.submitterComment || submission.comments.length) {
+    const notes = make("div", "search-notes");
+    if (submission.submitterComment) {
+      const note = make("p", "");
+      note.append(make("strong", "", `${submission.submitter} · Submission note: `), document.createTextNode(submission.submitterComment));
+      notes.append(note);
+    }
+    submission.comments.forEach((comment) => {
+      const note = make("p", "");
+      note.append(make("strong", "", `${comment.author}: `), document.createTextNode(comment.text));
+      notes.append(note);
+    });
+    content.append(notes);
+  }
   if (submission.spotifyUrl) {
-    const link = make("a", "result-link", "Play on Spotify ↗");
+    const link = make("a", "expanded-link", "Play on Spotify ↗");
     link.href = submission.spotifyUrl;
     link.target = "_blank";
     link.rel = "noreferrer";
-    card.append(link);
+    content.append(link);
   }
+  card.append(content);
   return card;
 }
 
-function searchRoundCard({ season, round }) {
-  const card = make("article", "search-card");
-  card.append(
-    make("p", "result-meta", `${season.label} · Round ${round.number}`),
-    make("h4", "", round.name),
-    make("p", "result-detail", round.description || "No round description."),
-    make("p", "result-foot", `${round.submissions.length} submissions`),
-  );
+function searchRoundCard({ season, round }, query) {
+  const reasons = matchReasons([["Season", season.label], ["Round title", round.name], ["Round description", round.description]], query);
+  const card = make("details", "search-card round-result");
+  card.append(resultSummary(
+    `${season.label} · Round ${round.number}`,
+    round.name,
+    round.description || "No round description.",
+    `${round.submissions.length} submissions`,
+    reasons,
+  ));
+  const content = make("div", "search-card-content");
+  const list = make("div", "mini-song-list");
+  round.submissions.forEach((submission) => {
+    const row = make("div", "mini-song-row");
+    row.append(make("strong", "", submission.title), make("span", "", submission.artists), make("span", "", submission.submitter), make("strong", "", `${submission.points} pts`));
+    list.append(row);
+  });
+  content.append(list);
   if (round.playlistUrl) {
-    const link = make("a", "result-link", "Open playlist ↗");
+    const link = make("a", "expanded-link", "Open round playlist ↗");
     link.href = round.playlistUrl;
     link.target = "_blank";
     link.rel = "noreferrer";
-    card.append(link);
+    content.append(link);
   }
+  card.append(content);
   return card;
 }
 
-function searchPersonCard(person) {
-  const card = make("article", "search-card person-result");
-  card.append(
-    make("p", "result-meta", "Club member"),
-    make("h4", "", person.name),
-    make("p", "result-detail", `${number.format(person.points)} all-time points`),
-    make("p", "result-foot", `${person.submissions} songs across ${person.seasons} seasons`),
-  );
+function searchPersonCard(person, query) {
+  const reasons = matchReasons([["Member name", person.name]], query);
+  const card = make("details", "search-card person-result");
+  card.append(resultSummary(
+    "Club member",
+    person.name,
+    `${number.format(person.points)} all-time points`,
+    `${person.submissions} songs across ${person.seasons} seasons`,
+    reasons,
+  ));
+  const content = make("div", "search-card-content");
+  const picks = allSubmissions().filter(({ submission }) => submission.submitter === person.name)
+    .sort((a, b) => b.submission.points - a.submission.points);
+  const stats = make("div", "detail-stats");
+  stats.append(detailStat("Points", number.format(person.points)), detailStat("Songs", number.format(person.submissions)), detailStat("Seasons", number.format(person.seasons)), detailStat("Average", `${(person.points / person.submissions).toFixed(1)} pts/song`));
+  content.append(stats);
+  const list = make("div", "mini-song-list");
+  picks.forEach(({ season, submission }) => {
+    const row = make("div", "mini-song-row");
+    row.append(make("strong", "", submission.title), make("span", "", submission.artists), make("span", "", season.label), make("strong", "", `${submission.points} pts`));
+    list.append(row);
+  });
+  content.append(list);
+  card.append(content);
   return card;
 }
 
-function searchCommentCard({ season, round, submission, author, text, kind }) {
-  const card = make("article", "search-card comment-result");
-  card.append(
-    make("p", "result-meta", `${season.label} · ${submission.title} · ${submission.artists}`),
-    make("h4", "", `${author}${kind === "note" ? " · Submission note" : " · Comment"}`),
-    make("p", "comment-quote", text),
-    make("p", "result-foot", `Round ${round.number}: ${round.name}`),
-  );
+function searchCommentCard({ season, round, submission, author, text, kind }, query) {
+  const reasons = matchReasons([
+    ["Author", author], [kind === "note" ? "Submission note" : "Comment text", text],
+    ["Song title", submission.title], ["Artist", submission.artists], ["Round", round.name], ["Season", season.label],
+  ], query);
+  const card = make("details", "search-card comment-result");
+  const preview = text.length > 150 ? `${text.slice(0, 147)}…` : text;
+  card.append(resultSummary(
+    `${season.label} · ${submission.title} · ${submission.artists}`,
+    `${author}${kind === "note" ? " · Submission note" : " · Comment"}`,
+    preview,
+    `Round ${round.number}: ${round.name}`,
+    reasons,
+  ));
+  const content = make("div", "search-card-content");
+  content.append(make("p", "comment-quote", text));
+  const stats = make("div", "detail-stats");
+  stats.append(detailStat("Song", submission.title), detailStat("Artist", submission.artists), detailStat("Picked by", submission.submitter), detailStat("Points", number.format(submission.points)));
+  content.append(stats);
+  if (submission.spotifyUrl) {
+    const link = make("a", "expanded-link", "Play song on Spotify ↗");
+    link.href = submission.spotifyUrl;
+    link.target = "_blank";
+    link.rel = "noreferrer";
+    content.append(link);
+  }
+  card.append(content);
   return card;
 }
 
@@ -270,10 +420,10 @@ function renderGlobalSearch() {
   }).filter((comment) => normalized(`${comment.author} ${comment.text} ${comment.submission.title} ${comment.submission.artists} ${comment.round.name} ${comment.season.label}`).includes(query));
 
   const groups = [
-    ["people", "People", people, searchPersonCard],
-    ["songs", "Songs", songs, searchSongCard],
-    ["rounds", "Rounds", rounds, searchRoundCard],
-    ["comments", "Comments & notes", comments, searchCommentCard],
+    ["people", "People", people, (item) => searchPersonCard(item, query)],
+    ["songs", "Songs", songs, (item) => searchSongCard(item, query)],
+    ["rounds", "Rounds", rounds, (item) => searchRoundCard(item, query)],
+    ["comments", "Comments & notes", comments, (item) => searchCommentCard(item, query)],
   ];
   const visibleGroups = groups.filter(([key]) => type === "all" || type === key);
   const total = visibleGroups.reduce((sum, [, , items]) => sum + items.length, 0);
@@ -383,11 +533,22 @@ function renderReports() {
     playerRoot.append(row);
   });
 
+  const artistBreadth = new Map();
+  entries.forEach(({ submission }) => {
+    if (!artistBreadth.has(submission.submitter)) artistBreadth.set(submission.submitter, new Set());
+    artistBreadth.get(submission.submitter).add(normalized(submission.artists));
+  });
+  const deepestCatalog = [...artistBreadth.entries()].sort((a, b) => b[1].size - a[1].size)[0];
+  const peakSeason = archive.seasons.map((season) => ({ season, winner: season.leaderboard[0] }))
+    .sort((a, b) => b.winner.points - a.winner.points)[0];
+
   const findings = [
     ["The closest finish", `${closest.season.label} was decided by ${closest.margin} point${closest.margin === 1 ? "" : "s"}.`],
     ["The biggest runaway", `${runaway.season.label} ended with a ${runaway.margin}-point gap between first and second.`],
     ["The conversation starter", `“${mostDiscussed.submission.title}” by ${mostDiscussed.submission.artists} drew the most written reactions.`],
     ["The repeat favorite", `${artists[0].name} appeared ${artists[0].picks} times and collected ${number.format(artists[0].points)} points.`],
+    ["The deepest catalog", `${deepestCatalog[0]} submitted ${number.format(deepestCatalog[1].size)} different artists across the archive.`],
+    ["The biggest season total", `${peakSeason.winner.name} scored ${number.format(peakSeason.winner.points)} points in ${peakSeason.season.label}.`],
   ];
   const findingsRoot = $("#interesting-findings");
   findingsRoot.replaceChildren();
@@ -413,6 +574,7 @@ async function init() {
     if (!response.ok) throw new Error("Data unavailable");
     archive = await response.json();
     renderStats();
+    renderActiveSeason();
     renderSeasonOptions();
     renderSeason();
     renderAllTime();
