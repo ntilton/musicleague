@@ -81,7 +81,7 @@ a { color: inherit; }
 .record-mark::after { width: 14px; height: 14px; }
 .record-mark i { width: 5px; height: 5px; border-radius: 50%; background: var(--ink); }
 
-nav { display: flex; gap: 4px; }
+.site-nav { display: flex; gap: 4px; }
 .nav-tab, .text-button {
   border: 0;
   color: var(--muted);
@@ -95,6 +95,13 @@ nav { display: flex; gap: 4px; }
   font-size: .86rem;
   font-weight: 750;
 }
+
+.nav-link { display: block; text-decoration: none; }
+.menu-toggle { display: none; width: 42px; height: 42px; padding: 10px; border: 1px solid var(--line); border-radius: 12px; background: var(--panel); cursor: pointer; }
+.menu-toggle span { display: block; height: 2px; margin: 4px 0; border-radius: 2px; background: var(--paper); transition: transform .2s ease, opacity .2s ease; }
+.menu-toggle[aria-expanded="true"] span:nth-child(1) { transform: translateY(6px) rotate(45deg); }
+.menu-toggle[aria-expanded="true"] span:nth-child(2) { opacity: 0; }
+.menu-toggle[aria-expanded="true"] span:nth-child(3) { transform: translateY(-6px) rotate(-45deg); }
 
 .nav-tab:hover, .nav-tab:focus-visible, .nav-tab.is-active { color: var(--ink); background: var(--acid); outline: none; }
 
@@ -379,11 +386,13 @@ select:focus, input:focus { border-color: var(--acid); box-shadow: 0 0 0 3px rgb
 footer { display: flex; justify-content: space-between; gap: 20px; padding: 28px clamp(18px, 4vw, 64px); border-top: 1px solid var(--line); color: var(--muted); font-size: .76rem; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; }
 
 @media (max-width: 760px) {
-  .site-header { align-items: flex-start; gap: 10px; }
+  .site-header { align-items: center; gap: 10px; }
   .brand { font-size: .65rem; }
   .record-mark { width: 34px; height: 34px; }
-  nav { justify-content: flex-end; flex-wrap: wrap; }
-  .nav-tab { padding: 7px 8px; font-size: .7rem; }
+  .menu-toggle { display: block; }
+  .site-nav { position: absolute; top: calc(100% + 8px); right: 12px; display: none; width: min(280px, calc(100vw - 24px)); padding: 8px; border: 1px solid var(--line); border-radius: 16px; background: rgba(18, 23, 32, .98); box-shadow: 0 20px 50px rgba(0,0,0,.45); }
+  .site-nav.is-open { display: grid; }
+  .site-nav .nav-tab { width: 100%; padding: 12px 14px; border-radius: 10px; font-size: .86rem; text-align: left; }
   main { width: min(100% - 24px, 1180px); }
   .stats { grid-template-columns: repeat(2, 1fr); }
   .stat:nth-child(3) { border-left: 0; border-top: 1px solid var(--line); }

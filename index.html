@@ -6,7 +6,7 @@
   <meta name="description" content="Eleven seasons of Conscious Club songs, votes, comments, and questionable taste.">
   <title>The Conscious Club Archive</title>
   <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='12' fill='%230a0d12'/%3E%3Ccircle cx='32' cy='32' r='22' fill='%23c7ff5e'/%3E%3Ccircle cx='32' cy='32' r='8' fill='%230a0d12'/%3E%3Ccircle cx='32' cy='32' r='3' fill='%23f3f0e8'/%3E%3C/svg%3E">
-  <link rel="stylesheet" href="styles.css?v=20260928-8">
+  <link rel="stylesheet" href="styles.css?v=20260928-9">
 </head>
 <body>
   <header class="site-header">
@@ -14,11 +14,15 @@
       <span class="record-mark" aria-hidden="true"><i></i></span>
       <span>CONSCIOUS<br>CLUB ARCHIVE</span>
     </a>
-    <nav aria-label="Archive sections">
+    <button class="menu-toggle" id="menu-toggle" type="button" aria-expanded="false" aria-controls="site-nav" aria-label="Open menu">
+      <span></span><span></span><span></span>
+    </button>
+    <nav class="site-nav" id="site-nav" aria-label="Archive sections">
       <button class="nav-tab is-active" data-view="archive">Archive</button>
       <button class="nav-tab" data-view="search">Search</button>
       <button class="nav-tab" data-view="reports">Reports</button>
       <button class="nav-tab" data-view="alltime">All-time table</button>
+      <a class="nav-tab nav-link" href="https://open.spotify.com/playlist/56s2ur5UHrPtWcbqVpNv4Z" target="_blank" rel="noreferrer">Master playlist <span aria-hidden="true">↗</span></a>
     </nav>
   </header>
 
@@ -151,6 +155,6 @@
     <span>Archive through Floor 11 · Active: Business Casual</span>
   </footer>
 
-  <script src="app.js?v=20260928-7" defer></script>
+  <script src="app.js?v=20260928-9" defer></script>
 </body>
 </html>

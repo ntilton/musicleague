@@ -615,6 +615,13 @@ function showView(view) {
   if (view === "search") $("#global-search").focus({ preventScroll: true });
 }
 
+function closeMenu() {
+  const toggle = $("#menu-toggle");
+  $("#site-nav").classList.remove("is-open");
+  toggle.setAttribute("aria-expanded", "false");
+  toggle.setAttribute("aria-label", "Open menu");
+}
+
 async function init() {
   try {
     const response = await fetch("data.json?v=20260928-2");
@@ -643,6 +650,22 @@ $("#toggle-standings").addEventListener("click", (event) => {
   event.currentTarget.textContent = expanded ? "Show full table" : "Hide full table";
   $("#full-standings").hidden = expanded;
 });
-document.querySelectorAll(".nav-tab").forEach((tab) => tab.addEventListener("click", () => showView(tab.dataset.view)));
+document.querySelectorAll(".nav-tab[data-view]").forEach((tab) => tab.addEventListener("click", () => {
+  showView(tab.dataset.view);
+  closeMenu();
+}));
+$(".nav-link").addEventListener("click", closeMenu);
+$("#menu-toggle").addEventListener("click", (event) => {
+  const open = event.currentTarget.getAttribute("aria-expanded") === "true";
+  $("#site-nav").classList.toggle("is-open", !open);
+  event.currentTarget.setAttribute("aria-expanded", String(!open));
+  event.currentTarget.setAttribute("aria-label", open ? "Open menu" : "Close menu");
+});
+document.addEventListener("click", (event) => {
+  if (!event.target.closest(".site-header")) closeMenu();
+});
+document.addEventListener("keydown", (event) => {
+  if (event.key === "Escape") closeMenu();
+});
 
 init();
