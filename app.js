@@ -494,7 +494,7 @@ function renderGlobalSearch() {
   if (!query) {
     summary.textContent = "Search covers 912 songs, every artist and album, 81 rounds, six members, submission notes, and all 1,331 comments.";
     const prompt = make("div", "search-prompt");
-    prompt.append(make("strong", "", "Nothing is excluded."), make("p", "", "Enter a word, name, lyric fragment, title, or phrase. Accents and capitalization do not matter."));
+    prompt.append(make("strong", "", "Search within the selected result type."), make("p", "", "Enter a song, artist, album, person, round, comment, or note. Accents and capitalization do not matter."));
     root.append(prompt);
     return;
   }
