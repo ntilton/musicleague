@@ -607,17 +607,43 @@ function renderReports() {
   const zeroPointCounts = archive.allTimeLeaderboard.map((person) => ({
     name: person.name,
     submissions: person.submissions,
-    count: zeroPointSubmissions.filter(({ submission }) => submission.submitter === person.name).length,
+    songs: zeroPointSubmissions.filter(({ submission }) => submission.submitter === person.name),
+  })).map((person) => ({
+    ...person,
+    count: person.songs.length,
   })).sort((a, b) => b.count - a.count || a.name.localeCompare(b.name));
   const zeroPointRoot = $("#zero-point-report");
   zeroPointRoot.replaceChildren();
-  zeroPointCounts.forEach((person, index) => zeroPointRoot.append(reportRow(
-    index + 1,
-    person.name,
-    `${((person.count / person.submissions) * 100).toFixed(1)}% of ${number.format(person.submissions)} submissions`,
-    `${person.count} song${person.count === 1 ? "" : "s"}`,
-    zeroPointCounts[0].count,
-  )));
+  zeroPointCounts.forEach((person, index) => {
+    const card = make("details", "zero-player-card");
+    const summary = make("summary", "zero-player-summary");
+    const copy = make("span", "zero-player-copy");
+    copy.append(
+      make("strong", "", person.name),
+      make("span", "", `${((person.count / person.submissions) * 100).toFixed(1)}% of ${number.format(person.submissions)} submissions`),
+    );
+    const count = make("strong", "zero-player-count", `${person.count} song${person.count === 1 ? "" : "s"}`);
+    summary.append(make("span", "report-rank", String(index + 1).padStart(2, "0")), copy, count, make("span", "zero-player-toggle", "+"));
+    const bar = make("span", "zero-player-bar");
+    bar.style.setProperty("--bar", `${Math.max(4, (person.count / zeroPointCounts[0].count) * 100)}%`);
+    summary.append(bar);
+
+    const songs = make("div", "zero-song-list");
+    person.songs.forEach(({ season, round, submission }) => {
+      const row = make(submission.spotifyUrl ? "a" : "div", "zero-song-row");
+      if (submission.spotifyUrl) {
+        row.href = submission.spotifyUrl;
+        row.target = "_blank";
+        row.rel = "noreferrer";
+      }
+      const songCopy = make("span", "zero-song-copy");
+      songCopy.append(make("strong", "", submission.title), make("span", "", submission.artists));
+      row.append(songCopy, make("span", "zero-song-meta", `${season.label} · Round ${round.number}`), make("span", "zero-song-open", submission.spotifyUrl ? "↗" : ""));
+      songs.append(row);
+    });
+    card.append(summary, songs);
+    zeroPointRoot.append(card);
+  });
   $("#zero-point-summary").textContent = `${number.format(zeroPointSubmissions.length)} songs earned no points across the completed archive.`;
   const zeroPointPlaylist = $("#zero-point-playlist");
   zeroPointPlaylist.href = zeroPointPlaylistUrl;
