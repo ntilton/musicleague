@@ -28,6 +28,7 @@ const liveSeason = {
 };
 
 const masterPlaylistUrl = "https://open.spotify.com/playlist/56s2ur5UHrPtWcbqVpNv4Z";
+const zeroPointPlaylistUrl = "https://open.spotify.com/playlist/0P6vBLrZtgqnTwxlAzARC7";
 const seasonPlaylistUrls = new Map([
   [1, "https://open.spotify.com/playlist/5IlkvJG79e5jhFmGIq1Z6J"],
   [2, "https://open.spotify.com/playlist/3Lm9GAQkHvgtkxMeWEDG76"],
@@ -601,6 +602,25 @@ function renderReports() {
     String(artist.picks),
     artists[0].picks,
   )));
+
+  const zeroPointSubmissions = entries.filter(({ submission }) => Number(submission.points) === 0);
+  const zeroPointCounts = archive.allTimeLeaderboard.map((person) => ({
+    name: person.name,
+    submissions: person.submissions,
+    count: zeroPointSubmissions.filter(({ submission }) => submission.submitter === person.name).length,
+  })).sort((a, b) => b.count - a.count || a.name.localeCompare(b.name));
+  const zeroPointRoot = $("#zero-point-report");
+  zeroPointRoot.replaceChildren();
+  zeroPointCounts.forEach((person, index) => zeroPointRoot.append(reportRow(
+    index + 1,
+    person.name,
+    `${((person.count / person.submissions) * 100).toFixed(1)}% of ${number.format(person.submissions)} submissions`,
+    `${person.count} song${person.count === 1 ? "" : "s"}`,
+    zeroPointCounts[0].count,
+  )));
+  $("#zero-point-summary").textContent = `${number.format(zeroPointSubmissions.length)} songs earned no points across the completed archive.`;
+  const zeroPointPlaylist = $("#zero-point-playlist");
+  zeroPointPlaylist.href = zeroPointPlaylistUrl;
 
   const wins = new Map();
   archive.seasons.forEach((season) => {
