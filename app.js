@@ -233,20 +233,6 @@ function renderSeason() {
   renderRounds();
 }
 
-function renderAllTime() {
-  const root = $("#alltime-table");
-  archive.allTimeLeaderboard.forEach((person, index) => {
-    const row = make("div", "leader-row");
-    row.append(make("span", "leader-rank", String(index + 1).padStart(2, "0")), make("strong", "leader-name", person.name));
-    [[person.points, "points"], [person.submissions, "songs"], [person.seasons, "seasons"]].forEach(([value, label]) => {
-      const stat = make("span", "leader-stat");
-      stat.append(make("strong", "", number.format(value)), make("span", "", label));
-      row.append(stat);
-    });
-    root.append(row);
-  });
-}
-
 function playlistCard(title, detail, url, featured = false) {
   const card = make("a", `playlist-hub-card${featured ? " is-featured" : ""}`);
   card.href = url;
@@ -569,6 +555,52 @@ function renderReports() {
   const closest = margins.slice().sort((a, b) => a.margin - b.margin)[0];
   const runaway = margins.slice().sort((a, b) => b.margin - a.margin)[0];
   const leader = archive.allTimeLeaderboard[0];
+  const playerPlacements = archive.allTimeLeaderboard.map((person) => {
+    const finishes = archive.seasons.map((season) => {
+      const index = season.leaderboard.findIndex((entry) => entry.name === person.name);
+      return index >= 0 ? { season: season.label, rank: index + 1 } : null;
+    }).filter(Boolean);
+    const wonSeasons = finishes.filter(({ rank }) => rank === 1).map(({ season }) => season);
+    const runnerUpFinishes = finishes.filter(({ rank }) => rank === 2).length;
+    const nonWinningFinishes = finishes.filter(({ rank }) => rank > 1).length;
+    const averageFinish = finishes.reduce((sum, { rank }) => sum + rank, 0) / finishes.length;
+    return { ...person, wonSeasons, wins: wonSeasons.length, runnerUpFinishes, nonWinningFinishes, averageFinish };
+  });
+
+  const winsByPlayer = playerPlacements.slice().sort((a, b) => b.wins - a.wins || b.points - a.points || a.name.localeCompare(b.name));
+  const winsRoot = $("#season-wins-report");
+  winsRoot.replaceChildren();
+  winsByPlayer.forEach((person, index) => winsRoot.append(reportRow(
+    index + 1,
+    person.name,
+    person.wonSeasons.length ? person.wonSeasons.join(" · ") : "No season wins",
+    `${person.wins} win${person.wins === 1 ? "" : "s"}`,
+    winsByPlayer[0].wins,
+  )));
+
+  const pointsByPlayer = playerPlacements.slice().sort((a, b) => b.points - a.points || a.name.localeCompare(b.name));
+  const pointsRoot = $("#total-points-report");
+  pointsRoot.replaceChildren();
+  pointsByPlayer.forEach((person, index) => pointsRoot.append(reportRow(
+    index + 1,
+    person.name,
+    `${number.format(person.submissions)} songs · ${(person.points / person.submissions).toFixed(1)} points per song`,
+    `${number.format(person.points)} pts`,
+    pointsByPlayer[0].points,
+  )));
+
+  const bridesmaids = playerPlacements.slice().sort((a, b) =>
+    b.nonWinningFinishes - a.nonWinningFinishes || b.runnerUpFinishes - a.runnerUpFinishes || a.averageFinish - b.averageFinish || a.name.localeCompare(b.name));
+  const bridesmaidRoot = $("#bridesmaid-report");
+  bridesmaidRoot.replaceChildren();
+  bridesmaids.forEach((person, index) => bridesmaidRoot.append(reportRow(
+    index + 1,
+    person.name,
+    `${person.runnerUpFinishes} runner-up finish${person.runnerUpFinishes === 1 ? "" : "es"} · ${person.averageFinish.toFixed(1)} average place`,
+    `${person.nonWinningFinishes} finishes`,
+    bridesmaids[0].nonWinningFinishes,
+  )));
+
   const reportFacts = [
     ["All-time leader", leader.name, `${number.format(leader.points)} points`],
     ["Single-song record", topSong.submission.title, `${topSong.submission.points} points · ${topSong.submission.artists}`],
@@ -648,29 +680,6 @@ function renderReports() {
   const zeroPointPlaylist = $("#zero-point-playlist");
   zeroPointPlaylist.href = zeroPointPlaylistUrl;
 
-  const wins = new Map();
-  archive.seasons.forEach((season) => {
-    const winner = season.leaderboard[0]?.name;
-    if (winner) wins.set(winner, (wins.get(winner) || 0) + 1);
-  });
-  const players = archive.allTimeLeaderboard.map((person) => ({ ...person, wins: wins.get(person.name) || 0, average: person.points / person.submissions }));
-  const playerRoot = $("#player-report");
-  playerRoot.replaceChildren();
-  const header = make("div", "player-row player-header");
-  ["Player", "Points", "Songs", "Pts / song", "Season wins"].forEach((label) => header.append(make("span", "", label)));
-  playerRoot.append(header);
-  players.forEach((player) => {
-    const row = make("div", "player-row");
-    row.append(
-      make("strong", "", player.name),
-      make("span", "", number.format(player.points)),
-      make("span", "", number.format(player.submissions)),
-      make("span", "", player.average.toFixed(1)),
-      make("span", "", number.format(player.wins)),
-    );
-    playerRoot.append(row);
-  });
-
   const artistBreadth = new Map();
   entries.forEach(({ submission }) => {
     if (!artistBreadth.has(submission.submitter)) artistBreadth.set(submission.submitter, new Set());
@@ -700,7 +709,7 @@ function renderReports() {
 }
 
 function showView(view) {
-  ["archive", "search", "reports", "playlists", "alltime"].forEach((name) => {
+  ["archive", "search", "reports", "playlists"].forEach((name) => {
     $(`#${name}-view`).hidden = name !== view;
   });
   document.querySelectorAll(".nav-tab").forEach((tab) => tab.classList.toggle("is-active", tab.dataset.view === view));
@@ -724,7 +733,6 @@ async function init() {
     renderActiveSeason();
     renderSeasonOptions();
     renderSeason();
-    renderAllTime();
     renderPlaylistHub();
     renderGlobalSearch();
     renderReports();

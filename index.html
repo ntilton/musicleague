@@ -6,7 +6,7 @@
   <meta name="description" content="Eleven seasons of Conscious Club songs, votes, comments, and questionable taste.">
   <title>The Conscious Club Archive</title>
   <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='12' fill='%230a0d12'/%3E%3Ccircle cx='32' cy='32' r='22' fill='%23c7ff5e'/%3E%3Ccircle cx='32' cy='32' r='8' fill='%230a0d12'/%3E%3Ccircle cx='32' cy='32' r='3' fill='%23f3f0e8'/%3E%3C/svg%3E">
-  <link rel="stylesheet" href="styles.css?v=20260928-14">
+  <link rel="stylesheet" href="styles.css?v=20260928-15">
 </head>
 <body>
   <header class="site-header">
@@ -22,7 +22,6 @@
       <button class="nav-tab" data-view="search">Search</button>
       <button class="nav-tab" data-view="reports">Reports</button>
       <button class="nav-tab" data-view="playlists">Playlists</button>
-      <button class="nav-tab" data-view="alltime">All-time table</button>
       <a class="nav-tab nav-link" href="https://open.spotify.com/playlist/56s2ur5UHrPtWcbqVpNv4Z" target="_blank" rel="noreferrer">Master playlist <span aria-hidden="true">↗</span></a>
     </nav>
   </header>
@@ -127,6 +126,24 @@
         <h2>Records &amp; findings</h2>
         <p>All-time highs, repeat favorites, close finishes, and the patterns hiding in eleven seasons.</p>
       </div>
+      <div class="report-grid player-leader-reports">
+        <section class="report-panel">
+          <div class="report-heading"><p class="kicker">Championships</p><h3>Season wins by player</h3></div>
+          <div id="season-wins-report" class="report-list"></div>
+        </section>
+        <section class="report-panel">
+          <div class="report-heading"><p class="kicker">Career scoring</p><h3>Total points by player</h3></div>
+          <div id="total-points-report" class="report-list"></div>
+        </section>
+      </div>
+      <section class="report-panel wide-report bridesmaid-panel">
+        <div class="report-heading">
+          <p class="kicker">Always a bridesmaid, never a bride</p>
+          <h3>Most non-first-place finishes</h3>
+          <p class="report-summary">Every completed-season finish outside first place, with runner-up results breaking ties.</p>
+        </div>
+        <div id="bridesmaid-report" class="report-list bridesmaid-list"></div>
+      </section>
       <div id="report-facts" class="report-facts"></div>
       <div class="report-grid">
         <section class="report-panel">
@@ -149,27 +166,12 @@
         </div>
         <div id="zero-point-report" class="report-list zero-point-list"></div>
       </section>
-      <section class="report-panel wide-report">
-        <div class="report-heading"><p class="kicker">Player report</p><h3>Points, pace &amp; season wins</h3></div>
-        <div id="player-report" class="report-table"></div>
-      </section>
       <section class="findings-panel">
         <div class="report-heading"><p class="kicker">Worth knowing</p><h3>Interesting data finds</h3></div>
         <div id="interesting-findings" class="findings-grid"></div>
       </section>
     </section>
 
-    <section class="workspace alltime-view" id="alltime-view" hidden>
-      <div class="season-heading">
-        <div>
-          <p class="kicker">Eleven seasons, one table</p>
-          <h2>All-time standings</h2>
-        </div>
-        <p class="season-meta">Total points across every submission in the archive.</p>
-      </div>
-      <div id="alltime-table" class="leaderboard-table"></div>
-      <p class="fine-print">Points reflect the Music League exports. Ties are displayed alphabetically.</p>
-    </section>
   </main>
 
   <footer>
@@ -177,6 +179,6 @@
     <span>Archive through Floor 11 · Active: Business Casual</span>
   </footer>
 
-  <script src="app.js?v=20260928-14" defer></script>
+  <script src="app.js?v=20260928-15" defer></script>
 </body>
 </html>
