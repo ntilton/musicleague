@@ -17,12 +17,15 @@ const liveSeason = {
   playerCount: 6,
   playerCapacity: 10,
   songsPerRound: 5,
-  currentRound: {
+  status: "Complete",
+  winner: { name: "Randall Baber", points: 40 },
+  finalRound: {
     number: 1,
     name: "Sharing is Caring",
     description: "Yes, it's been too long. Surely you've stumbled upon some gems and thought to yourself, \"I can fit this into a future music league round\". Well this is the round for you. 5 songs, no theme, please help us expand our al gore isms.",
-    phase: "Voting",
-    deadline: "October 3, 2026 at 2:00 PM",
+    winningSong: "Richard Petty",
+    winningArtist: "Billy Strings",
+    winningPoints: 15,
     playlistUrl: "https://open.spotify.com/playlist/0XmVC7EvxVKQMLWE3AXKL4",
   },
 };
@@ -41,7 +44,33 @@ const seasonPlaylistUrls = new Map([
   [9, "https://open.spotify.com/playlist/0xnpOg6b4uin1iTTMDZ6om"],
   [10, "https://open.spotify.com/playlist/5cXf4jxGqfv6vFnyOc6Ynh"],
   [11, "https://open.spotify.com/playlist/4daEy7Y5qsOeJVXFXinxRG"],
+  [12, "https://open.spotify.com/playlist/0XmVC7EvxVKQMLWE3AXKL4"],
 ]);
+
+function mergeLatestSeason(latest) {
+  if (archive.seasons.some((season) => season.number === latest.number)) return;
+  archive.seasons.unshift(latest);
+  archive.totals.seasons += 1;
+  archive.totals.rounds += latest.roundCount;
+  archive.totals.submissions += latest.submissionCount;
+  archive.totals.votes += latest.voteCount;
+  archive.totals.comments += latest.rounds.reduce((total, round) => total + round.submissions.reduce(
+    (sum, submission) => sum + submission.comments.length + Number(Boolean(submission.submitterComment)), 0,
+  ), 0);
+
+  const people = new Map(archive.allTimeLeaderboard.map((person) => [person.name, { ...person }]));
+  latest.leaderboard.forEach((standing) => {
+    const person = people.get(standing.name) || { name: standing.name, points: 0, submissions: 0, seasons: 0 };
+    const submissions = latest.rounds.reduce((total, round) => total + round.submissions.filter(
+      (submission) => submission.submitter === standing.name,
+    ).length, 0);
+    person.points += standing.points;
+    person.submissions += submissions;
+    person.seasons += 1;
+    people.set(person.name, person);
+  });
+  archive.allTimeLeaderboard = [...people.values()].sort((a, b) => b.points - a.points || a.name.localeCompare(b.name));
+}
 
 function renderStats() {
   const labels = [
@@ -63,27 +92,27 @@ function renderActiveSeason() {
   root.replaceChildren();
   const copy = make("div", "active-season-copy");
   copy.append(
-    make("p", "kicker", "Active season"),
+    make("p", "kicker", `Latest season · ${liveSeason.status}`),
     make("h2", "", liveSeason.label),
     make("p", "", liveSeason.description),
-    make("p", "active-leader", `${liveSeason.playerCount} of ${liveSeason.playerCapacity} players · ${liveSeason.songsPerRound} songs per round`),
+    make("p", "active-leader", `${liveSeason.winner.name} won with ${liveSeason.winner.points} points · ${liveSeason.playerCount} players`),
   );
 
   const round = make("div", "active-round");
   round.append(
-    make("span", "active-round-label", `Current round · ${liveSeason.currentRound.phase}`),
-    make("strong", "", liveSeason.currentRound.name),
-    make("p", "", liveSeason.currentRound.description),
-    make("span", "active-deadline", `Votes due ${liveSeason.currentRound.deadline}`),
+    make("span", "active-round-label", `Final round · ${liveSeason.finalRound.name}`),
+    make("strong", "", liveSeason.finalRound.winningSong),
+    make("p", "", `${liveSeason.finalRound.winningArtist} · ${liveSeason.finalRound.winningPoints} points`),
+    make("span", "active-deadline", "Round winner"),
   );
 
   const actions = make("div", "active-season-actions");
-  const explore = make("a", "active-button", "Open Business Casual ↗");
+  const explore = make("a", "active-button", "View full results ↗");
   explore.href = liveSeason.leagueUrl;
   explore.target = "_blank";
   explore.rel = "noreferrer";
-  const playlist = make("a", "active-playlist-link", "Current round playlist ↗");
-  playlist.href = liveSeason.currentRound.playlistUrl;
+  const playlist = make("a", "active-playlist-link", "Business Casual playlist ↗");
+  playlist.href = liveSeason.finalRound.playlistUrl;
   playlist.target = "_blank";
   playlist.rel = "noreferrer";
   actions.append(explore, playlist);
@@ -250,8 +279,8 @@ function playlistCard(title, detail, url, featured = false) {
 function renderPlaylistHub() {
   const root = $("#playlist-hub");
   root.replaceChildren(playlistCard(
-    "All submissions",
-    `${number.format(archive.totals.submissions)} songs across ${archive.totals.seasons} completed seasons`,
+    "Master playlist",
+    "912 songs through Floor 11 · Business Casual is listed below",
     masterPlaylistUrl,
     true,
   ));
@@ -479,7 +508,7 @@ function renderGlobalSearch() {
   root.replaceChildren();
 
   if (!query) {
-    summary.textContent = "Search covers 912 songs, every artist and album, 81 rounds, six members, submission notes, and all 1,331 comments.";
+    summary.textContent = `Search covers ${number.format(archive.totals.submissions)} songs, every artist and album, ${number.format(archive.totals.rounds)} rounds, six members, submission notes, and all ${number.format(archive.totals.comments)} comments.`;
     const prompt = make("div", "search-prompt");
     prompt.append(make("strong", "", "Search within the selected result type."), make("p", "", "Enter a song, artist, album, person, round, comment, or note. Accents and capitalization do not matter."));
     root.append(prompt);
@@ -726,9 +755,13 @@ function closeMenu() {
 
 async function init() {
   try {
-    const response = await fetch("data.json?v=20260928-2");
-    if (!response.ok) throw new Error("Data unavailable");
-    archive = await response.json();
+    const [archiveResponse, latestResponse] = await Promise.all([
+      fetch("data.json?v=20261012-1"),
+      fetch("business-casual.json?v=20261012-1"),
+    ]);
+    if (!archiveResponse.ok || !latestResponse.ok) throw new Error("Data unavailable");
+    archive = await archiveResponse.json();
+    mergeLatestSeason(await latestResponse.json());
     renderStats();
     renderActiveSeason();
     renderSeasonOptions();

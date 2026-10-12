@@ -1,0 +1,607 @@
+{
+  "number": 12,
+  "label": "Business Casual",
+  "description": "The one where the equinox finally broke the heat dome",
+  "roundCount": 1,
+  "submissionCount": 30,
+  "voteCount": 75,
+  "leagueUrl": "https://app.musicleague.com/l/a951c9733a0d4250b1117c0767539aa4/",
+  "leaderboard": [
+    {
+      "name": "Randall Baber",
+      "points": 40
+    },
+    {
+      "name": "Ryan Dorr",
+      "points": 29
+    },
+    {
+      "name": "Neil Tilton",
+      "points": 26
+    },
+    {
+      "name": "Brock1pickett",
+      "points": 24
+    },
+    {
+      "name": "erik",
+      "points": 16
+    },
+    {
+      "name": "Brandon",
+      "points": 15
+    }
+  ],
+  "rounds": [
+    {
+      "number": 1,
+      "name": "Sharing is Caring",
+      "description": "Yes, it's been too long. Surely you've stumbled upon some gems and thought to yourself, \"I can fit this into a future music league round\". Well this is the round for you. 5 songs, no theme, please help us expand our al gore isms.",
+      "createdAt": "2026-09-28T00:00:00Z",
+      "playlistUrl": "https://open.spotify.com/playlist/0XmVC7EvxVKQMLWE3AXKL4",
+      "submissions": [
+        {
+          "album": "Highway Prayers",
+          "artists": "Billy Strings",
+          "comments": [
+            {
+              "author": "Ryan Dorr",
+              "text": "Ok fine I'll listen to Billy Strings"
+            },
+            {
+              "author": "erik",
+              "text": "Got this one on vinyl ❤️"
+            }
+          ],
+          "points": 15,
+          "rank": 1,
+          "spotifyUrl": "https://open.spotify.com/track/77vfp7HY2M3d1KZTPgFBfF",
+          "submittedAt": "",
+          "submitter": "Randall Baber",
+          "submitterComment": "",
+          "title": "Richard Petty",
+          "visibleToVoters": false,
+          "voteCount": 5
+        },
+        {
+          "album": "Time",
+          "artists": "Olivia Dean",
+          "comments": [
+            {
+              "author": "Ryan Dorr",
+              "text": "She is delightful"
+            },
+            {
+              "author": "erik",
+              "text": "Gem"
+            }
+          ],
+          "points": 11,
+          "rank": 2,
+          "spotifyUrl": "https://open.spotify.com/track/78Uo6eJIPkVo4Xw848NCN7",
+          "submittedAt": "",
+          "submitter": "Neil Tilton",
+          "submitterComment": "Nice brass",
+          "title": "Time",
+          "visibleToVoters": false,
+          "voteCount": 5
+        },
+        {
+          "album": "Train Don't Leave Me",
+          "artists": "Aubrey Ghent",
+          "comments": [
+            {
+              "author": "Brandon",
+              "text": "You're not the boss of me...but you did have my favorite song this round. Good job Randall."
+            },
+            {
+              "author": "Neil Tilton",
+              "text": "definition of boogie"
+            },
+            {
+              "author": "Brock1pickett",
+              "text": "I’m was gonna vote on this before the video :)"
+            }
+          ],
+          "points": 11,
+          "rank": 3,
+          "spotifyUrl": "https://open.spotify.com/track/0JsuauQI4h66o23HVkznvK",
+          "submittedAt": "",
+          "submitter": "Randall Baber",
+          "submitterComment": "It’s important that you watch the video: https://m.youtube.com/watch?v=VTb49FnqsVc&ra",
+          "title": "Train Don't Leave Me",
+          "visibleToVoters": false,
+          "voteCount": 4
+        },
+        {
+          "album": "Feels Like Destiny",
+          "artists": "Skinny Hightower",
+          "comments": [
+            {
+              "author": "erik",
+              "text": "Ok pretty badass"
+            },
+            {
+              "author": "Neil Tilton",
+              "text": "chunky"
+            }
+          ],
+          "points": 9,
+          "rank": 4,
+          "spotifyUrl": "https://open.spotify.com/track/5IlmMxDfZ3VWwHaN2xwZS0",
+          "submittedAt": "",
+          "submitter": "Ryan Dorr",
+          "submitterComment": "",
+          "title": "The Fifth Floor",
+          "visibleToVoters": false,
+          "voteCount": 4
+        },
+        {
+          "album": "Mt. Whateverest",
+          "artists": "The F16s",
+          "comments": [
+            {
+              "author": "Ryan Dorr",
+              "text": "I kept playing this one over and over"
+            }
+          ],
+          "points": 8,
+          "rank": 5,
+          "spotifyUrl": "https://open.spotify.com/track/0ea3Hxi24z3KGVj1QSuQKm",
+          "submittedAt": "",
+          "submitter": "erik",
+          "submitterComment": "",
+          "title": "Mt. Whateverest",
+          "visibleToVoters": false,
+          "voteCount": 4
+        },
+        {
+          "album": "Cover The Mirrors",
+          "artists": "Ben Kweller",
+          "comments": [
+            {
+              "author": "Ryan Dorr",
+              "text": "This song was awesome and got me excited to check out the album to see how BK has evolved. This was the only song I liked"
+            },
+            {
+              "author": "erik",
+              "text": "+1 for Waxahatchee in the rain with Neil"
+            }
+          ],
+          "points": 8,
+          "rank": 6,
+          "spotifyUrl": "https://open.spotify.com/track/117kyiqf9KdKL3KZAqgsXH",
+          "submittedAt": "",
+          "submitter": "Neil Tilton",
+          "submitterComment": "",
+          "title": "Dollar Store (feat. Waxahatchee)",
+          "visibleToVoters": false,
+          "voteCount": 4
+        },
+        {
+          "album": "It Comes in Waves",
+          "artists": "New Constellations",
+          "comments": [
+            {
+              "author": "Neil Tilton",
+              "text": "I love bass synth"
+            }
+          ],
+          "points": 7,
+          "rank": 7,
+          "spotifyUrl": "https://open.spotify.com/track/1CLZzeLWqdhz5IfR5vHy4u",
+          "submittedAt": "",
+          "submitter": "Ryan Dorr",
+          "submitterComment": "",
+          "title": "Hot Blooded",
+          "visibleToVoters": false,
+          "voteCount": 3
+        },
+        {
+          "album": "Snakes",
+          "artists": "Magic City Hippies",
+          "comments": [
+            {
+              "author": "Ryan Dorr",
+              "text": "Even more trombone!!!!"
+            }
+          ],
+          "points": 7,
+          "rank": 8,
+          "spotifyUrl": "https://open.spotify.com/track/0wpkDXC9IvjL49pcIV2ev2",
+          "submittedAt": "",
+          "submitter": "Brock1pickett",
+          "submitterComment": "",
+          "title": "Snakes",
+          "visibleToVoters": false,
+          "voteCount": 3
+        },
+        {
+          "album": "Let Me Back In",
+          "artists": "ZG Smith",
+          "comments": [
+            {
+              "author": "Ryan Dorr",
+              "text": "Yes trombone!"
+            },
+            {
+              "author": "erik",
+              "text": "Zach and I have the same lawyer"
+            },
+            {
+              "author": "Neil Tilton",
+              "text": "It's got Alabama Shakes vibe"
+            }
+          ],
+          "points": 6,
+          "rank": 9,
+          "spotifyUrl": "https://open.spotify.com/track/0MVuFwjHO4YmMEk9nij9wx",
+          "submittedAt": "",
+          "submitter": "Brandon",
+          "submitterComment": "",
+          "title": "Let Me Back In",
+          "visibleToVoters": false,
+          "voteCount": 4
+        },
+        {
+          "album": "Essex Honey",
+          "artists": "Blood Orange",
+          "comments": [],
+          "points": 6,
+          "rank": 10,
+          "spotifyUrl": "https://open.spotify.com/track/04KHyqdGs5sVEWX6UnukF2",
+          "submittedAt": "",
+          "submitter": "Ryan Dorr",
+          "submitterComment": "",
+          "title": "Mind Loaded (feat. Caroline Polachek, Lorde & Mustafa)",
+          "visibleToVoters": false,
+          "voteCount": 3
+        },
+        {
+          "album": "Lighter Notes",
+          "artists": "Luca Sestak",
+          "comments": [
+            {
+              "author": "Neil Tilton",
+              "text": "great cooking music"
+            }
+          ],
+          "points": 6,
+          "rank": 11,
+          "spotifyUrl": "https://open.spotify.com/track/6zA8QZUAJwR1FxvuW1qR2l",
+          "submittedAt": "",
+          "submitter": "Randall Baber",
+          "submitterComment": "",
+          "title": "Anticipation",
+          "visibleToVoters": false,
+          "voteCount": 3
+        },
+        {
+          "album": "Blue Mountain Hop - Live Heart",
+          "artists": "Béla Fleck",
+          "comments": [],
+          "points": 6,
+          "rank": 11,
+          "spotifyUrl": "https://open.spotify.com/track/6h3IbNOxeuGm2O84GkxMaI",
+          "submittedAt": "",
+          "submitter": "Randall Baber",
+          "submitterComment": "",
+          "title": "Blue Mountain Hop - Live Heart",
+          "visibleToVoters": false,
+          "voteCount": 3
+        },
+        {
+          "album": "HOW TO BE A LOVER",
+          "artists": "Goldie Boutilier",
+          "comments": [
+            {
+              "author": "Ryan Dorr",
+              "text": "This slaps"
+            }
+          ],
+          "points": 6,
+          "rank": 13,
+          "spotifyUrl": "https://open.spotify.com/track/1xbP92TbLVfUlS2BtkTidi",
+          "submittedAt": "",
+          "submitter": "Brock1pickett",
+          "submitterComment": "",
+          "title": "HOW TO BE A LOVER",
+          "visibleToVoters": false,
+          "voteCount": 3
+        },
+        {
+          "album": "I Feel High (with L'Impératrice)",
+          "artists": "Poolside",
+          "comments": [
+            {
+              "author": "Ryan Dorr",
+              "text": "Always down for both of these artists"
+            }
+          ],
+          "points": 5,
+          "rank": 14,
+          "spotifyUrl": "https://open.spotify.com/track/4OMmBb1DjcGzGGuWQ9BrEa",
+          "submittedAt": "",
+          "submitter": "Brock1pickett",
+          "submitterComment": "",
+          "title": "I Feel High (with L'Impératrice)",
+          "visibleToVoters": false,
+          "voteCount": 4
+        },
+        {
+          "album": "Asc. Scorpio",
+          "artists": "Oracle Sisters",
+          "comments": [
+            {
+              "author": "Ryan Dorr",
+              "text": "Oh yeah this is a jam"
+            }
+          ],
+          "points": 5,
+          "rank": 15,
+          "spotifyUrl": "https://open.spotify.com/track/2MnSPY2QYMbtkDWGzY02In",
+          "submittedAt": "",
+          "submitter": "Brock1pickett",
+          "submitterComment": "",
+          "title": "Asc. Scorpio",
+          "visibleToVoters": false,
+          "voteCount": 2
+        },
+        {
+          "album": "BIG MODERN!",
+          "artists": "Goose",
+          "comments": [],
+          "points": 4,
+          "rank": 16,
+          "spotifyUrl": "https://open.spotify.com/track/2WYlpIl1nlzmKSSV81pNfv",
+          "submittedAt": "",
+          "submitter": "Neil Tilton",
+          "submitterComment": "Ending is great",
+          "title": "Big Modern!",
+          "visibleToVoters": false,
+          "voteCount": 2
+        },
+        {
+          "album": "Dragon New Warm Mountain I Believe In You",
+          "artists": "Big Thief",
+          "comments": [
+            {
+              "author": "erik",
+              "text": "After every new Big Thief song I have to listen to “Not”"
+            }
+          ],
+          "points": 4,
+          "rank": 16,
+          "spotifyUrl": "https://open.spotify.com/track/2FwDApgXk91kXvqy2oB7dz",
+          "submittedAt": "",
+          "submitter": "Ryan Dorr",
+          "submitterComment": "",
+          "title": "Simulation Swarm",
+          "visibleToVoters": false,
+          "voteCount": 2
+        },
+        {
+          "album": "Drive-Thru Booty",
+          "artists": "Freak Power",
+          "comments": [],
+          "points": 3,
+          "rank": 18,
+          "spotifyUrl": "https://open.spotify.com/track/2SC4TS2QvUcKvXRFGgyyDc",
+          "submittedAt": "",
+          "submitter": "Brandon",
+          "submitterComment": "",
+          "title": "Turn On, Tune In, Cop Out - Radio Edit",
+          "visibleToVoters": false,
+          "voteCount": 2
+        },
+        {
+          "album": "Juice",
+          "artists": "Ryo Kawasaki",
+          "comments": [],
+          "points": 3,
+          "rank": 18,
+          "spotifyUrl": "https://open.spotify.com/track/4ao6BFYHriZoBfYPkNhJau",
+          "submittedAt": "",
+          "submitter": "Ryan Dorr",
+          "submitterComment": "",
+          "title": "El Toro",
+          "visibleToVoters": false,
+          "voteCount": 2
+        },
+        {
+          "album": "Remain in Light (Deluxe Version)",
+          "artists": "Talking Heads",
+          "comments": [
+            {
+              "author": "erik",
+              "text": "Always an odd little diddy"
+            },
+            {
+              "author": "Brock1pickett",
+              "text": "Obligatory"
+            }
+          ],
+          "points": 3,
+          "rank": 18,
+          "spotifyUrl": "https://open.spotify.com/track/4eBCTzBsSjYgrLH5clQf2x",
+          "submittedAt": "",
+          "submitter": "Brandon",
+          "submitterComment": "Nice little funky jam.",
+          "title": "Born Under Punches (The Heat Goes On) - 2005 Remaster",
+          "visibleToVoters": false,
+          "voteCount": 2
+        },
+        {
+          "album": "The Wow! Signal",
+          "artists": "Muse",
+          "comments": [
+            {
+              "author": "Neil Tilton",
+              "text": "love it"
+            }
+          ],
+          "points": 3,
+          "rank": 21,
+          "spotifyUrl": "https://open.spotify.com/track/5uRIDvs1RzuxBIj8NigFUn",
+          "submittedAt": "",
+          "submitter": "erik",
+          "submitterComment": "",
+          "title": "Be With You",
+          "visibleToVoters": false,
+          "voteCount": 1
+        },
+        {
+          "album": "We Didn’t Start The Fire",
+          "artists": "Fall Out Boy",
+          "comments": [],
+          "points": 2,
+          "rank": 22,
+          "spotifyUrl": "https://open.spotify.com/track/60glT2wsoSHV3B8yCRSB8v",
+          "submittedAt": "",
+          "submitter": "Neil Tilton",
+          "submitterComment": "Have we done this one before?",
+          "title": "We Didn’t Start The Fire",
+          "visibleToVoters": false,
+          "voteCount": 2
+        },
+        {
+          "album": "Mission Statement",
+          "artists": "Slap Dragon",
+          "comments": [],
+          "points": 2,
+          "rank": 23,
+          "spotifyUrl": "https://open.spotify.com/track/42UdQ4cdP7S4PuwVrwDL6T",
+          "submittedAt": "",
+          "submitter": "Randall Baber",
+          "submitterComment": "",
+          "title": "Mission Statement",
+          "visibleToVoters": false,
+          "voteCount": 1
+        },
+        {
+          "album": "What's Up",
+          "artists": "Told Slant",
+          "comments": [
+            {
+              "author": "Neil Tilton",
+              "text": "kinda got a sopranos vibe"
+            }
+          ],
+          "points": 2,
+          "rank": 23,
+          "spotifyUrl": "https://open.spotify.com/track/5feMDiROzsXjLh1jxwUAut",
+          "submittedAt": "",
+          "submitter": "erik",
+          "submitterComment": "",
+          "title": "Rain of God",
+          "visibleToVoters": false,
+          "voteCount": 1
+        },
+        {
+          "album": "Koi No Yokan",
+          "artists": "Deftones",
+          "comments": [
+            {
+              "author": "erik",
+              "text": "Really need to listen to their new record"
+            }
+          ],
+          "points": 2,
+          "rank": 23,
+          "spotifyUrl": "https://open.spotify.com/track/4bLCPfBLKlqiONo6TALTh5",
+          "submittedAt": "",
+          "submitter": "Brandon",
+          "submitterComment": "",
+          "title": "Entombed",
+          "visibleToVoters": false,
+          "voteCount": 1
+        },
+        {
+          "album": "Everything Will Be Alright",
+          "artists": "Collect 200",
+          "comments": [
+            {
+              "author": "Ryan Dorr",
+              "text": "I love this group"
+            }
+          ],
+          "points": 2,
+          "rank": 23,
+          "spotifyUrl": "https://open.spotify.com/track/4AsS1khbavjTZ5Nh4ChAAV",
+          "submittedAt": "",
+          "submitter": "erik",
+          "submitterComment": "",
+          "title": "Collect 200",
+          "visibleToVoters": false,
+          "voteCount": 1
+        },
+        {
+          "album": "Sleep For Days",
+          "artists": "Jackie Evans",
+          "comments": [],
+          "points": 1,
+          "rank": 27,
+          "spotifyUrl": "https://open.spotify.com/track/5arVjW52OfnKICAyg3429N",
+          "submittedAt": "",
+          "submitter": "Neil Tilton",
+          "submitterComment": "",
+          "title": "Sleep For Days",
+          "visibleToVoters": false,
+          "voteCount": 1
+        },
+        {
+          "album": "Sexy Magic (from GTAVI: The Album)",
+          "artists": "CA7RIEL & Paco Amoroso",
+          "comments": [
+            {
+              "author": "Neil Tilton",
+              "text": "I feel like I'm shopping at H&M"
+            }
+          ],
+          "points": 1,
+          "rank": 27,
+          "spotifyUrl": "https://open.spotify.com/track/62hqNk13CuFLOpCw1cPMAF",
+          "submittedAt": "",
+          "submitter": "erik",
+          "submitterComment": "",
+          "title": "Sexy Magic (from GTAVI: The Album)",
+          "visibleToVoters": false,
+          "voteCount": 1
+        },
+        {
+          "album": "Painwave",
+          "artists": "Clean Cut Kid",
+          "comments": [
+            {
+              "author": "erik",
+              "text": "Interesting … has a Manchester Orchestra feel to it."
+            }
+          ],
+          "points": 1,
+          "rank": 27,
+          "spotifyUrl": "https://open.spotify.com/track/3m7QGY2wCCAjNIfsnFdqfW",
+          "submittedAt": "",
+          "submitter": "Brock1pickett",
+          "submitterComment": "",
+          "title": "Emily",
+          "visibleToVoters": false,
+          "voteCount": 1
+        },
+        {
+          "album": "Unknown Pleasures (Collector's Edition)",
+          "artists": "Joy Division",
+          "comments": [],
+          "points": 1,
+          "rank": 27,
+          "spotifyUrl": "https://open.spotify.com/track/33yz4pZitBJaa7eXSW5Dxs",
+          "submittedAt": "",
+          "submitter": "Brandon",
+          "submitterComment": "Been on a big kick with this song lately",
+          "title": "Day of the Lords - 2007 Remaster",
+          "visibleToVoters": false,
+          "voteCount": 1
+        }
+      ]
+    }
+  ]
+}
