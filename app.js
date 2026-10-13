@@ -756,8 +756,8 @@ function closeMenu() {
 async function init() {
   try {
     const [archiveResponse, latestResponse] = await Promise.all([
-      fetch("data.json?v=20261012-1"),
-      fetch("business-casual.json?v=20261012-1"),
+      fetch("data.json?v=20261013-2"),
+      fetch("business-casual.json?v=20261013-2"),
     ]);
     if (!archiveResponse.ok || !latestResponse.ok) throw new Error("Data unavailable");
     archive = await archiveResponse.json();
